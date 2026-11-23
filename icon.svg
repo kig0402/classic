@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0a0c12" />
+      <stop offset="50%" stop-color="#141824" />
+      <stop offset="100%" stop-color="#050608" />
+    </linearGradient>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f5e6c8" />
+      <stop offset="35%" stop-color="#d4af37" />
+      <stop offset="100%" stop-color="#996515" />
+    </linearGradient>
+    <filter id="goldGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="8" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <!-- Background Canvas -->
+  <rect width="512" height="512" rx="110" fill="url(#bgGrad)" />
+  
+  <!-- Outer Decorative Ring -->
+  <circle cx="256" cy="256" r="210" fill="none" stroke="url(#goldGrad)" stroke-width="3" opacity="0.4" />
+  <circle cx="256" cy="256" r="195" fill="none" stroke="url(#goldGrad)" stroke-width="1.5" stroke-dasharray="8 6" opacity="0.6" />
+
+  <!-- Classical Clef / Lyre Emblem -->
+  <g filter="url(#goldGlow)" fill="url(#goldGrad)">
+    <!-- Treble Clef Stylized -->
+    <path d="M266 100 C274 100 282 108 282 118 C282 145 258 175 240 205 C232 218 226 230 226 245 C226 265 242 278 262 278 C286 278 306 260 306 236 C306 215 292 200 274 200 C264 200 256 206 256 216 C256 224 262 230 270 230 C274 230 278 228 280 224 C281 228 282 232 282 236 C282 248 272 258 258 258 C246 258 238 248 238 236 C238 220 248 202 260 182 C276 156 298 128 298 102 C298 78 280 60 256 60 C234 60 216 76 216 100 C216 112 220 128 228 148 L220 190 C210 206 202 226 202 248 C202 285 228 314 262 314 C270 314 278 312 286 308 L268 400 C265 415 258 425 248 425 C238 425 230 415 230 405 C230 398 235 392 242 392 C248 392 252 396 252 402 C252 408 248 412 244 412 C242 412 240 410 240 408 C240 412 244 416 248 416 C256 416 260 408 262 395 L282 295 C295 284 304 268 304 248 C304 220 282 196 254 196 C248 196 242 198 238 202 L248 140 C242 124 238 112 238 100 C238 88 246 80 256 80 C262 80 266 88 266 100 Z" />
+  </g>
+
+  <!-- Brand Typography -->
+  <text x="256" y="465" font-family="'Cinzel', serif, 'Times New Roman'" font-size="34" font-weight="700" letter-spacing="8" fill="url(#goldGrad)" text-anchor="middle">OPUS</text>
+</svg>

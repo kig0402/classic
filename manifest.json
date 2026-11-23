@@ -1,0 +1,33 @@
+{
+  "name": "OPUS - 클래식 음악 추천 & 도슨트",
+  "short_name": "OPUS",
+  "description": "유명 작곡가 대표곡, 분위기별 큐레이션, 감동적인 비하인드 스토리와 악장별 해설, AI 클래식 소믈리에",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0a0c12",
+  "theme_color": "#0a0c12",
+  "icons": [
+    {
+      "src": "./icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "./icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "./icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ],
+  "categories": ["music", "lifestyle", "education"],
+  "lang": "ko"
+}

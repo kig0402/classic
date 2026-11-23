@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>OPUS (오푸스) - 내 손안의 클래식 도슨트 & 맞춤 추천</title>
+  <meta name="description" content="작곡가별 대표곡, 분위기별 큐레이션, 감동적인 비하인드 스토리, 악장별 구성과 유튜브 뮤직 연동까지. 일상 속 클래식 큐레이션 플랫폼">
+
+  <!-- PWA Meta & Icons -->
+  <link rel="manifest" href="./manifest.json">
+  <meta name="theme-color" content="#0a0c12">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="OPUS">
+  <link rel="apple-touch-icon" href="./icon-192.png">
+  <link rel="icon" type="image/svg+xml" href="./icon.svg">
+  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png">
+
+  <!-- Google Fonts: Cinzel & Playfair Display & Noto Serif KR -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Noto+Serif+KR:wght@400;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
+  
+  <!-- App Stylesheet -->
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+
+  <!-- App Header -->
+  <header class="app-header">
+    <div class="brand" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+      <div class="brand-icon">🎼</div>
+      <div class="brand-text">
+        <h1>OPUS</h1>
+        <span>CLASSICAL DOCENT</span>
+      </div>
+    </div>
+
+    <!-- Desktop Navigation -->
+    <nav class="nav-desktop">
+      <button class="nav-btn active" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">🏠 홈</button>
+      <button class="nav-btn" onclick="scrollToSection('sectionMoods')">🌙 무드별</button>
+      <button class="nav-btn" onclick="scrollToSection('sectionComposers')">👑 작곡가</button>
+      <button class="nav-btn" onclick="scrollToSection('sectionAISommelier')">✨ AI 소믈리에</button>
+      <button class="nav-btn" onclick="scrollToSection('sectionPlaylists')">🎧 플레이리스트</button>
+    </nav>
+
+    <!-- Header Right (Search + Install Button) -->
+    <div class="header-right">
+      <div class="search-box">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="searchInput" placeholder="곡, 작곡가 검색..." autocomplete="off">
+      </div>
+      <button class="btn-install-header" id="btnInstallHeader" title="스마트폰 앱으로 설치">
+        <span>📲</span> 앱 설치
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Content Container -->
+  <main class="container">
+
+    <!-- PWA Install Prompt Banner (Visible on supported mobile/desktop browsers) -->
+    <div class="pwa-banner" id="pwaBanner" style="display: none;">
+      <div class="pwa-banner-text">
+        <h4><span>📲</span> 홈 화면에 앱으로 추가하기</h4>
+        <p>크롬 앱으로 설치하면 더 빠르고 풀스크린 네이티브 앱처럼 실행됩니다.</p>
+      </div>
+      <div class="pwa-banner-actions">
+        <button class="btn-primary" id="btnInstallBanner" style="padding: 0.45rem 0.9rem; font-size: 0.82rem;">
+          설치하기
+        </button>
+        <button class="btn-secondary" id="btnDismissBanner" style="padding: 0.45rem 0.7rem; font-size: 0.82rem;">
+          닫기
+        </button>
+      </div>
+    </div>
+
+    <!-- Hero Card: Today's Masterpiece Docent -->
+    <section class="hero-card">
+      <div class="hero-tag">🌟 오늘의 클래식 도슨트 Pick</div>
+      <h2 class="hero-title">베토벤: 피아노 소나타 14번 '월광'</h2>
+      <p class="hero-desc">
+        스위스 루체른 호수 위에 비친 달빛 같은 선율. 청력을 잃어가는 가혹한 운명과 실연의 아픔 속에서 피어난 불멸의 명작을 만나보세요.
+      </p>
+      <div class="hero-actions">
+        <button class="btn-primary" id="heroTodayPlayBtn">
+          ▶ YouTube Music으로 듣기
+        </button>
+        <button class="btn-secondary" id="heroTodayDocentBtn">
+          📖 곡의 배경과 악장 보기
+        </button>
+      </div>
+    </section>
+
+    <!-- AI Classic Sommelier Box -->
+    <section class="ai-sommelier-card" id="sectionAISommelier">
+      <div class="ai-header">
+        <div class="ai-icon-badge">🤖</div>
+        <div>
+          <h3>AI 클래식 소믈리에</h3>
+          <span style="font-size: 0.78rem; color: var(--text-dim);">자연어로 기분이나 상황을 말씀해 주시면, 맞춤 선율을 즉시 골라드립니다.</span>
+        </div>
+      </div>
+      
+      <p class="ai-desc">
+        어떤 감정이나 상황에 머물고 계신가요? 상황에 딱 맞는 명곡과 감성적인 해설을 페어링해 드립니다.
+      </p>
+
+      <!-- Quick AI Prompts -->
+      <div class="ai-quick-tags">
+        <button class="ai-quick-tag" onclick="handleAIPrompt('비 오는 날 어울리는 아련한 첼로와 피아노곡')">🌧️ 비 오는 날 첼로</button>
+        <button class="ai-quick-tag" onclick="handleAIPrompt('새벽 2시, 잠 못 드는 밤 영혼을 어루만져 주는 달빛 선율')">🌙 새벽 2시의 사색</button>
+        <button class="ai-quick-tag" onclick="handleAIPrompt('시험 공부와 코딩 몰입에 좋은 차분한 클래식')">📚 깊은 몰입과 스터디</button>
+        <button class="ai-quick-tag" onclick="handleAIPrompt('지친 하루를 위로해 주는 따뜻하고 편안한 선율')">☕ 지친 하루의 릴랙스</button>
+        <button class="ai-quick-tag" onclick="handleAIPrompt('무기력함을 깨우고 심장을 뛰게 하는 웅장한 승리의 교향곡')">🔥 가슴 벅찬 활력</button>
+      </div>
+
+      <div class="ai-input-wrapper">
+        <input type="text" id="aiPromptInput" placeholder="예: '퇴근 후 혼자 와인 한 잔 마실 때 들을 잔잔한 피아노곡 추천해줘'" onkeydown="if(event.key==='Enter') handleAIPrompt()">
+        <button class="btn-primary" onclick="handleAIPrompt()">
+          추천받기 ✨
+        </button>
+      </div>
+
+      <!-- AI Result Box -->
+      <div class="ai-result-box" id="aiResultBox"></div>
+    </section>
+
+    <!-- Mood / Emotion Filters -->
+    <section id="sectionMoods" style="margin-bottom: 2rem;">
+      <div class="section-header">
+        <div>
+          <div class="section-title">
+            <span>감정과 분위기별 큐레이션</span>
+            <span class="badge">Mood & Vibes</span>
+          </div>
+          <p class="section-subtitle">지금 당신의 마음에 가장 가까운 무드를 선택하세요.</p>
+        </div>
+      </div>
+      <div class="mood-pills" id="moodPills"></div>
+    </section>
+
+    <!-- Classical Pieces Grid -->
+    <section style="margin-bottom: 3.5rem;">
+      <div class="section-header">
+        <div>
+          <div class="section-title">
+            <span>불멸의 클래식 명곡 컬렉션</span>
+            <span class="badge">Masterpieces</span>
+          </div>
+          <p class="section-subtitle">고화질 앨범 아트와 함께 악장별 구성, 비하인드 스토리를 탐색하세요.</p>
+        </div>
+      </div>
+      <div class="pieces-grid" id="piecesGrid"></div>
+    </section>
+
+    <!-- Great Composers Library -->
+    <section id="sectionComposers" style="margin-bottom: 3.5rem;">
+      <div class="section-header">
+        <div>
+          <div class="section-title">
+            <span>위대한 작곡가들의 방</span>
+            <span class="badge">Composers Hall</span>
+          </div>
+          <p class="section-subtitle">인류 음악사를 수놓은 거장들의 파란만장한 생애와 명언, 숨은 일화</p>
+        </div>
+      </div>
+      <div class="composers-grid" id="composersGrid"></div>
+    </section>
+
+    <!-- Curated Themed Playlists -->
+    <section id="sectionPlaylists" style="margin-bottom: 3.5rem;">
+      <div class="section-header">
+        <div>
+          <div class="section-title">
+            <span>테마별 추천 플레이리스트</span>
+            <span class="badge">Curated Sets</span>
+          </div>
+          <p class="section-subtitle">전문 에디터가 일상의 순간에 맞춰 특별히 엮은 선율 모음</p>
+        </div>
+      </div>
+      <div class="pieces-grid" id="playlistsGrid"></div>
+    </section>
+
+    <!-- Footer -->
+    <footer style="text-align: center; padding: 2.5rem 1rem 1rem; border-top: 1px solid rgba(255,255,255,0.06); color: var(--text-dim); font-size: 0.85rem;">
+      <p style="font-family: 'Cinzel', serif; font-size: 1.1rem; color: var(--accent-gold-light); margin-bottom: 0.35rem; letter-spacing: 0.1em;">
+        OPUS · CLASSICAL MUSIC
+      </p>
+      <p style="margin-bottom: 0.5rem;">
+        음원 저작권은 각 스트리밍 플랫폼(YouTube Music, Spotify)의 공식 링크를 통해 제공됩니다.
+      </p>
+      <p style="color: var(--text-dim);">
+        배포 주소: <a href="https://kig0402.github.io/classic" style="color: var(--accent-gold); text-decoration: none;">https://kig0402.github.io/classic</a>
+      </p>
+    </footer>
+
+  </main>
+
+  <!-- Mobile Bottom Navigation Bar -->
+  <nav class="mobile-bottom-nav">
+    <button class="mobile-nav-item active" onclick="handleBottomNav(this, 'top')">
+      <span class="icon">🏠</span>
+      <span>홈</span>
+    </button>
+    <button class="mobile-nav-item" onclick="handleBottomNav(this, 'sectionMoods')">
+      <span class="icon">🌙</span>
+      <span>무드</span>
+    </button>
+    <button class="mobile-nav-item" onclick="handleBottomNav(this, 'sectionAISommelier')">
+      <span class="icon">✨</span>
+      <span>소믈리에</span>
+    </button>
+    <button class="mobile-nav-item" onclick="handleBottomNav(this, 'sectionComposers')">
+      <span class="icon">👑</span>
+      <span>작곡가</span>
+    </button>
+    <button class="mobile-nav-item" onclick="handleBottomNav(this, 'sectionPlaylists')">
+      <span class="icon">🎧</span>
+      <span>테마</span>
+    </button>
+  </nav>
+
+  <!-- Interactive Modal Backdrop & Content (Bottom sheet on mobile) -->
+  <div class="modal-backdrop" id="modalBackdrop">
+    <div id="modalContentContainer" style="width: 100%; display: flex; justify-content: center;"></div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="./data.js"></script>
+  <script src="./app.js"></script>
+</body>
+</html>
