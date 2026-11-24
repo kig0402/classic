@@ -1,6 +1,6 @@
 /**
- * OPUS (오푸스) - Classical Music Curation Engine
- * Core Application Logic, Filtering, AI Sommelier & Modal Controller
+ * OPUS (오푸스) - Classical Music Curation Engine & PWA Controller (Enhanced)
+ * 가독성 높은 산세리프 폰트 대응, 매일 갱신되는 오늘의 Pick, 작곡가별 대표곡 큐레이션, 터치 반응 및 검색 최적화
  */
 
 // Application State
@@ -8,7 +8,8 @@ const state = {
   currentMood: 'all',
   selectedComposer: null,
   searchQuery: '',
-  activeTab: 'home'
+  deferredPrompt: null,
+  dailyPiece: null
 };
 
 // DOM Elements
@@ -17,161 +18,427 @@ const moodPillsContainer = document.getElementById('moodPills');
 const composersGrid = document.getElementById('composersGrid');
 const playlistsGrid = document.getElementById('playlistsGrid');
 const searchInput = document.getElementById('searchInput');
+const searchClearBtn = document.getElementById('searchClearBtn');
+const curationStatusBannerContainer = document.getElementById('curationStatusBannerContainer');
 const modalBackdrop = document.getElementById('modalBackdrop');
 const modalBody = document.getElementById('modalContentContainer');
 const aiInput = document.getElementById('aiPromptInput');
 const aiResultBox = document.getElementById('aiResultBox');
+const heroTodayCard = document.getElementById('heroTodayCard');
+const heroTodayDateTag = document.getElementById('heroTodayDateTag');
+const heroTodayTitle = document.getElementById('heroTodayTitle');
+const heroTodayDesc = document.getElementById('heroTodayDesc');
 const heroTodayBtn = document.getElementById('heroTodayDocentBtn');
-const heroPlayBtn = document.getElementById('heroTodayPlayBtn');
+const heroTodayPlayBtn = document.getElementById('heroTodayPlayBtn');
+const btnInstallHeader = document.getElementById('btnInstallHeader');
+const btnInstallBanner = document.getElementById('btnInstallBanner');
+const btnDismissBanner = document.getElementById('btnDismissBanner');
+const pwaBanner = document.getElementById('pwaBanner');
 
 // Initialize Application
 document.addEventListener('DOMContentLoaded', () => {
+  initDailyPick();
   renderMoodPills();
   renderPieces();
   renderComposers();
   renderPlaylists();
   setupEventListeners();
+  setupScrollSpy();
+  registerServiceWorker();
+  setupPWAInstall();
 });
 
-// Render Mood Filter Pills
+// 1. Dynamic Daily Rotation for "오늘의 클래식 도슨트 Pick" (Changes automatically every midnight)
+function initDailyPick() {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = now.getMonth() + 1;
+  const date = now.getDate();
+
+  // Deterministic daily index based on calendar date
+  const daySeed = year * 372 + month * 31 + date;
+  const dailyIndex = daySeed % CLASSIC_DATA.pieces.length;
+  state.dailyPiece = CLASSIC_DATA.pieces[dailyIndex];
+
+  if (heroTodayDateTag) {
+    heroTodayDateTag.innerHTML = `🌟 ${month}월 ${date}일 오늘의 클래식 도슨트 Pick`;
+  }
+  if (heroTodayTitle && state.dailyPiece) {
+    heroTodayTitle.textContent = `${state.dailyPiece.composerName}: ${state.dailyPiece.title}`;
+  }
+  if (heroTodayDesc && state.dailyPiece) {
+    heroTodayDesc.textContent = state.dailyPiece.description;
+  }
+  if (heroTodayCard && state.dailyPiece) {
+    heroTodayCard.style.backgroundImage = `linear-gradient(to right, rgba(10, 12, 18, 0.96) 42%, rgba(10, 12, 18, 0.52) 100%), url('${state.dailyPiece.albumArt}')`;
+  }
+
+  // Bind Hero Buttons to Today's Dynamic Pick
+  if (heroTodayPlayBtn && state.dailyPiece) {
+    heroTodayPlayBtn.onclick = () => playPieceExternal(state.dailyPiece.searchQuery, 'ytm');
+  }
+  if (heroTodayBtn && state.dailyPiece) {
+    heroTodayBtn.onclick = () => openPieceModal(state.dailyPiece.id);
+  }
+}
+
+// 2. Navigation & Smooth Scrolling Helpers
+function scrollToTop() {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  updateActiveNav('top');
+}
+
+function scrollToSection(sectionId) {
+  const el = document.getElementById(sectionId);
+  if (el) {
+    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    updateActiveNav(sectionId);
+  }
+}
+
+function handleBottomNav(btn, targetId) {
+  document.querySelectorAll('.mobile-nav-item').forEach(el => el.classList.remove('active'));
+  btn.classList.add('active');
+
+  if (targetId === 'top') {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  } else {
+    const el = document.getElementById(targetId);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      if (targetId === 'sectionAISommelier' && aiInput) {
+        setTimeout(() => aiInput.focus(), 400);
+      }
+    }
+  }
+}
+
+function updateActiveNav(targetId) {
+  document.querySelectorAll('.mobile-nav-item').forEach(el => {
+    if (el.dataset.nav === targetId) {
+      el.classList.add('active');
+    } else {
+      el.classList.remove('active');
+    }
+  });
+
+  document.querySelectorAll('.nav-btn').forEach(btn => {
+    if (btn.getAttribute('onclick')?.includes(targetId)) {
+      btn.classList.add('active');
+    } else {
+      btn.classList.remove('active');
+    }
+  });
+}
+
+// ScrollSpy to highlight bottom navigation based on viewport position
+function setupScrollSpy() {
+  const sections = ['sectionMoods', 'sectionAISommelier', 'sectionComposers', 'sectionPlaylists'];
+  window.addEventListener('scroll', () => {
+    const scrollPos = window.scrollY + 140;
+    if (window.scrollY < 200) {
+      updateActiveNav('top');
+      return;
+    }
+    for (const id of sections) {
+      const el = document.getElementById(id);
+      if (el) {
+        const top = el.offsetTop;
+        const height = el.offsetHeight;
+        if (scrollPos >= top && scrollPos < top + height) {
+          updateActiveNav(id);
+          break;
+        }
+      }
+    }
+  }, { passive: true });
+}
+
+// 3. Render Mood Filter Pills
 function renderMoodPills() {
   if (!moodPillsContainer) return;
   moodPillsContainer.innerHTML = CLASSIC_DATA.moods.map(mood => `
-    <button class="mood-pill ${state.currentMood === mood.id ? 'active' : ''}" data-mood="${mood.id}">
+    <button class="mood-pill ${state.currentMood === mood.id ? 'active' : ''}" onclick="handleMoodClick('${mood.id}')">
       <span>${mood.icon}</span>
       <span>${mood.name}</span>
     </button>
   `).join('');
 }
 
-// Render Pieces Grid
+function handleMoodClick(moodId) {
+  state.currentMood = moodId;
+  state.selectedComposer = null;
+  state.searchQuery = '';
+  if (searchInput) searchInput.value = '';
+  if (searchClearBtn) searchClearBtn.style.display = 'none';
+
+  renderMoodPills();
+  renderPieces();
+
+  // Smooth scroll down to pieces grid so user instantly sees filtered results
+  const piecesSection = document.getElementById('sectionPieces');
+  if (piecesSection) {
+    piecesSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+}
+
+// 4. Render Pieces Grid & Active Curation Banner
 function renderPieces() {
   if (!piecesGrid) return;
-  
-  let filtered = CLASSIC_DATA.pieces;
 
-  // Mood filter
-  if (state.currentMood !== 'all') {
-    filtered = filtered.filter(p => p.moods.includes(state.currentMood));
-  }
+  let filtered = [...CLASSIC_DATA.pieces];
+  let bannerHtml = '';
 
   // Composer filter
   if (state.selectedComposer) {
+    const composer = CLASSIC_DATA.composers.find(c => c.id === state.selectedComposer);
     filtered = filtered.filter(p => p.composerId === state.selectedComposer);
-  }
+    
+    // Sort signature masterpieces first
+    filtered.sort((a, b) => (a.signatureRank || 99) - (b.signatureRank || 99));
 
-  // Search filter
-  if (state.searchQuery.trim()) {
-    const q = state.searchQuery.toLowerCase();
-    filtered = filtered.filter(p => 
-      p.title.toLowerCase().includes(q) ||
-      p.titleEn.toLowerCase().includes(q) ||
-      p.composerName.toLowerCase().includes(q) ||
-      p.description.toLowerCase().includes(q) ||
-      p.backgroundStory.toLowerCase().includes(q)
+    if (composer) {
+      bannerHtml = `
+        <div class="curation-status-banner">
+          <div>
+            <div class="title">👑 ${composer.name} 대표 명곡 큐레이션 (${filtered.length}곡)</div>
+            <div class="desc">"${composer.quote}"</div>
+          </div>
+          <button class="btn-docent-sm" onclick="resetFilters()">전체보기 ✕</button>
+        </div>
+      `;
+    }
+  }
+  // Search query filter
+  else if (state.searchQuery.trim()) {
+    const q = state.searchQuery.toLowerCase().trim();
+
+    // Check if query is composer name
+    const matchedComposer = CLASSIC_DATA.composers.find(c => 
+      c.name.toLowerCase().includes(q) || 
+      c.nameEn.toLowerCase().includes(q)
     );
+
+    if (matchedComposer) {
+      filtered = filtered.filter(p => p.composerId === matchedComposer.id);
+      filtered.sort((a, b) => (a.signatureRank || 99) - (b.signatureRank || 99));
+      bannerHtml = `
+        <div class="curation-status-banner">
+          <div>
+            <div class="title">🔍 '${matchedComposer.name}' 대표 명곡 검색 결과 (${filtered.length}곡)</div>
+            <div class="desc">${matchedComposer.era} · ${matchedComposer.country}</div>
+          </div>
+          <button class="btn-docent-sm" onclick="resetFilters()">전체보기 ✕</button>
+        </div>
+      `;
+    } else {
+      filtered = filtered.filter(p => 
+        p.title.toLowerCase().includes(q) ||
+        p.titleEn.toLowerCase().includes(q) ||
+        p.composerName.toLowerCase().includes(q) ||
+        p.description.toLowerCase().includes(q) ||
+        p.backgroundStory.toLowerCase().includes(q) ||
+        (p.opus && p.opus.toLowerCase().includes(q))
+      );
+      bannerHtml = `
+        <div class="curation-status-banner">
+          <div>
+            <div class="title">🔍 '${state.searchQuery}' 검색 결과 (${filtered.length}곡)</div>
+            <div class="desc">검색어와 관련된 클래식 명곡 컬렉션입니다.</div>
+          </div>
+          <button class="btn-docent-sm" onclick="resetFilters()">전체보기 ✕</button>
+        </div>
+      `;
+    }
+  }
+  // Mood filter
+  else if (state.currentMood !== 'all') {
+    filtered = filtered.filter(p => p.moods.includes(state.currentMood));
+    const currentMoodObj = CLASSIC_DATA.moods.find(m => m.id === state.currentMood);
+    if (currentMoodObj) {
+      bannerHtml = `
+        <div class="curation-status-banner">
+          <div>
+            <div class="title">${currentMoodObj.icon} [${currentMoodObj.name}] 큐레이션 (${filtered.length}곡)</div>
+            <div class="desc">${currentMoodObj.desc}</div>
+          </div>
+          <button class="btn-docent-sm" onclick="resetFilters()">전체보기 ✕</button>
+        </div>
+      `;
+    }
   }
 
+  // Update Status Banner
+  if (curationStatusBannerContainer) {
+    curationStatusBannerContainer.innerHTML = bannerHtml;
+  }
+
+  // Update Counter Badge
+  const countBadge = document.getElementById('piecesCountBadge');
+  if (countBadge) {
+    countBadge.textContent = `${filtered.length}곡 수록`;
+  }
+
+  // Render No Results
   if (filtered.length === 0) {
     piecesGrid.innerHTML = `
-      <div style="grid-column: 1 / -1; text-align: center; padding: 3rem 1rem; color: var(--text-dim);">
-        <p style="font-size: 2rem; margin-bottom: 0.5rem;">🎻</p>
-        <p style="font-size: 1.1rem; color: var(--text-muted);">조건에 맞는 클래식 명곡을 찾지 못했습니다.</p>
-        <p style="font-size: 0.85rem; margin-top: 0.25rem;">다른 분위기 태그나 검색어를 입력해보세요.</p>
+      <div style="grid-column: 1 / -1; text-align: center; padding: 3.5rem 1rem; color: var(--text-dim); background: var(--bg-card); border-radius: var(--radius-md); border: 1px dashed rgba(255,255,255,0.1);">
+        <p style="font-size: 2.4rem; margin-bottom: 0.6rem;">🎻</p>
+        <p style="font-size: 1.1rem; font-weight: 700; color: #fff;">검색된 클래식 명곡이 없습니다.</p>
+        <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.35rem;">베토벤, 쇼팽, 모차르트, 월광, 녹턴 등의 단어로 검색해보세요.</p>
+        <button class="btn-primary" onclick="resetFilters()" style="margin-top: 1.25rem;">전체 명곡 보기</button>
       </div>
     `;
     return;
   }
 
-  piecesGrid.innerHTML = filtered.map(piece => `
-    <div class="piece-card" data-piece-id="${piece.id}">
-      <div class="card-cover">
-        <img src="${piece.albumArt}" alt="${piece.title}" loading="lazy" />
-        <div class="card-cover-badge">${piece.opus || piece.year}</div>
-        <div class="card-play-overlay" title="유튜브 뮤직에서 바로 듣기" onclick="event.stopPropagation(); playPieceExternal('${piece.searchQuery}', 'ytm')">
-          ▶
+  // Render Cards with Rank Badges for famous works
+  piecesGrid.innerHTML = filtered.map(piece => {
+    const isSignature = piece.signatureRank && piece.signatureRank <= 3;
+    const rankBadgeHtml = isSignature 
+      ? `<span class="card-cover-badge rank">👑 대표곡 ${piece.signatureRank}위</span>` 
+      : '';
+
+    return `
+      <div class="piece-card" data-piece-id="${piece.id}" style="animation: fadeIn 0.3s ease;">
+        <div class="card-cover">
+          <img src="${piece.albumArt}" alt="${piece.title}" loading="lazy" />
+          <div class="card-cover-badges">
+            ${rankBadgeHtml}
+            <span class="card-cover-badge">${piece.opus || piece.year}</span>
+          </div>
+          <div class="card-play-overlay" title="유튜브 뮤직에서 바로 듣기" onclick="event.stopPropagation(); playPieceExternal('${piece.searchQuery}', 'ytm')">
+            ▶
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="card-composer">${piece.composerName}</div>
+          <h3 class="card-title">${piece.title}</h3>
+          <p class="card-subtitle">${piece.titleEn}</p>
+          <p class="card-desc">${piece.description}</p>
+          <div class="card-footer">
+            <span class="movement-count">🎼 ${piece.movements.length}개 악장</span>
+            <button class="btn-docent-sm" onclick="openPieceModal('${piece.id}')">
+              📖 스토리 & 악장
+            </button>
+          </div>
         </div>
       </div>
-      <div class="card-body">
-        <div class="card-composer">${piece.composerName}</div>
-        <h3 class="card-title">${piece.title}</h3>
-        <p class="card-subtitle">${piece.titleEn}</p>
-        <p class="card-desc">${piece.description}</p>
-        <div class="card-footer">
-          <span class="movement-count">🎼 ${piece.movements.length}개 악장 구성</span>
-          <button class="btn-docent-sm" onclick="openPieceModal('${piece.id}')">
-            📖 스토리 & 악장
-          </button>
-        </div>
-      </div>
-    </div>
-  `).join('');
+    `;
+  }).join('');
 }
 
-// Render Composers Grid
+// Reset All Filters to Default View
+function resetFilters() {
+  state.currentMood = 'all';
+  state.selectedComposer = null;
+  state.searchQuery = '';
+  if (searchInput) searchInput.value = '';
+  if (searchClearBtn) searchClearBtn.style.display = 'none';
+  renderMoodPills();
+  renderPieces();
+}
+
+// 5. Select Composer -> Filter View with Famous Signature Works
+function selectComposer(composerId) {
+  state.selectedComposer = composerId;
+  state.currentMood = 'all';
+  state.searchQuery = '';
+  if (searchInput) searchInput.value = '';
+  if (searchClearBtn) searchClearBtn.style.display = 'none';
+
+  renderMoodPills();
+  renderPieces();
+
+  const piecesSection = document.getElementById('sectionPieces');
+  if (piecesSection) {
+    piecesSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+}
+
+// 6. Render Composers Grid
 function renderComposers() {
   if (!composersGrid) return;
-  composersGrid.innerHTML = CLASSIC_DATA.composers.map(c => `
-    <div class="composer-card" onclick="openComposerModal('${c.id}')">
-      <img class="composer-avatar" src="${c.avatar}" alt="${c.name}">
-      <div class="composer-info">
-        <h4>${c.name}</h4>
-        <p class="era">${c.era.split('(')[0]}</p>
-        <p class="years">${c.years} · ${c.country}</p>
+  composersGrid.innerHTML = CLASSIC_DATA.composers.map(c => {
+    const composerWorks = CLASSIC_DATA.pieces.filter(p => p.composerId === c.id);
+    return `
+      <div class="composer-card" onclick="selectComposer('${c.id}')">
+        <img class="composer-avatar" src="${c.avatar}" alt="${c.name}">
+        <div class="composer-info">
+          <h4>${c.name}</h4>
+          <p class="era">${c.era.split('(')[0]}</p>
+          <p class="years">${c.years} · 대표곡 ${composerWorks.length}편</p>
+        </div>
       </div>
-    </div>
-  `).join('');
+    `;
+  }).join('');
 }
 
-// Render Playlists
+// 7. Render Playlists
 function renderPlaylists() {
   if (!playlistsGrid) return;
   playlistsGrid.innerHTML = CLASSIC_DATA.curatedPlaylists.map(pl => `
     <div class="piece-card" style="cursor: pointer;" onclick="filterByPlaylist('${pl.id}')">
-      <div class="card-cover" style="height: 160px;">
+      <div class="card-cover" style="height: 165px;">
         <img src="${pl.cover}" alt="${pl.title}" loading="lazy" />
-        <div class="card-cover-badge">컬렉션 (${pl.pieceIds.length}곡)</div>
+        <div class="card-cover-badges">
+          <span class="card-cover-badge rank">테마 컬렉션 (${pl.pieceIds.length}곡)</span>
+        </div>
       </div>
       <div class="card-body">
         <h3 class="card-title" style="font-size: 1.05rem;">${pl.title}</h3>
         <p class="card-desc" style="margin-bottom: 0.5rem;">${pl.subtitle}</p>
         <div class="card-footer">
-          <span class="movement-count" style="color: var(--accent-gold);">선별된 큐레이션</span>
-          <button class="btn-docent-sm">수록곡 보기 ➔</button>
+          <span class="movement-count" style="color: var(--accent-gold);">에디터 추천</span>
+          <button class="btn-docent-sm">수록곡 듣기 ➔</button>
         </div>
       </div>
     </div>
   `).join('');
 }
 
-// Setup Global Event Listeners
-function setupEventListeners() {
-  // Mood pills click
-  if (moodPillsContainer) {
-    moodPillsContainer.addEventListener('click', (e) => {
-      const btn = e.target.closest('.mood-pill');
-      if (!btn) return;
-      state.currentMood = btn.dataset.mood;
-      state.selectedComposer = null; // reset composer filter
-      renderMoodPills();
-      renderPieces();
-    });
+// 8. Search Engine Implementation
+function handleSearchSubmit(e) {
+  if (e) e.preventDefault();
+  if (!searchInput) return;
+
+  const val = searchInput.value.trim();
+  state.searchQuery = val;
+  state.currentMood = 'all';
+  state.selectedComposer = null;
+
+  renderMoodPills();
+  renderPieces();
+
+  // Scroll to results immediately
+  const piecesSection = document.getElementById('sectionPieces');
+  if (piecesSection) {
+    piecesSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
-  // Search input
+  if (searchInput) searchInput.blur(); // dismiss mobile keyboard
+}
+
+function clearSearch() {
+  if (searchInput) searchInput.value = '';
+  if (searchClearBtn) searchClearBtn.style.display = 'none';
+  resetFilters();
+}
+
+// 9. Setup Global Event Listeners
+function setupEventListeners() {
+  // Search input typing
   if (searchInput) {
     searchInput.addEventListener('input', (e) => {
-      state.searchQuery = e.target.value;
+      const val = e.target.value;
+      if (searchClearBtn) {
+        searchClearBtn.style.display = val ? 'flex' : 'none';
+      }
+      state.searchQuery = val;
+      state.currentMood = 'all';
+      state.selectedComposer = null;
       renderPieces();
     });
-  }
-
-  // Hero Actions (Today's Pick is Piece-1 'Moonlight')
-  if (heroTodayBtn) {
-    heroTodayBtn.addEventListener('click', () => openPieceModal('piece-1'));
-  }
-  if (heroPlayBtn) {
-    heroPlayBtn.addEventListener('click', () => playPieceExternal("Beethoven Moonlight Sonata Barenboim", 'ytm'));
   }
 
   // Close Modal on backdrop click
@@ -187,7 +454,7 @@ function setupEventListeners() {
   });
 }
 
-// Open Piece Modal (Detailed Docent, Movements, Streaming Deep-links)
+// 10. Open Piece Modal (Detailed Docent, Movements, Streaming Deep-links)
 function openPieceModal(pieceId) {
   const piece = CLASSIC_DATA.pieces.find(p => p.id === pieceId);
   if (!piece) return;
@@ -198,19 +465,20 @@ function openPieceModal(pieceId) {
 
   modalBody.innerHTML = `
     <div class="modal-content">
+      <div class="bottom-sheet-handle"></div>
       <button class="modal-close-btn" onclick="closeModal()">✕</button>
       
       <div class="modal-header-hero">
         <img src="${piece.albumArt}" alt="${piece.title}">
         <div class="modal-header-gradient"></div>
         <div class="modal-header-text">
-          <span style="color: var(--accent-gold-light); font-size: 0.8rem; font-weight: 600; letter-spacing: 0.05em;">
+          <span style="color: var(--accent-gold-light); font-size: 0.8rem; font-weight: 700; letter-spacing: 0.05em;">
             ${piece.composerName} · ${piece.opus || piece.year}
           </span>
-          <h2 style="font-family: 'Cinzel', serif; font-size: 1.6rem; color: #fff; line-height: 1.25; margin-top: 0.3rem;">
+          <h2 style="font-size: 1.45rem; font-weight: 800; color: #fff; line-height: 1.25; margin-top: 0.25rem;">
             ${piece.title}
           </h2>
-          <p style="font-size: 0.85rem; color: rgba(255,255,255,0.7);">${piece.titleEn}</p>
+          <p style="font-size: 0.82rem; color: rgba(255,255,255,0.7);">${piece.titleEn}</p>
         </div>
       </div>
 
@@ -246,7 +514,7 @@ function openPieceModal(pieceId) {
         </div>
 
         <!-- Docent Storytelling: Interpretation -->
-        <div class="docent-box" style="border-left-color: #60a5fa; background: rgba(96, 165, 250, 0.05);">
+        <div class="docent-box" style="border-left-color: #60a5fa; background: rgba(96, 165, 250, 0.06);">
           <div class="docent-title" style="color: #93c5fd;">
             <span>🎧</span> 도슨트 감상 포인트 & 해설
           </div>
@@ -255,7 +523,7 @@ function openPieceModal(pieceId) {
 
         <!-- Movements & Tracklist -->
         <div class="movements-section">
-          <h4 style="font-size: 1.05rem; color: var(--text-main); margin-bottom: 0.3rem; display: flex; align-items: center; gap: 0.4rem;">
+          <h4 style="font-size: 1.05rem; font-weight: 700; color: var(--text-main); margin-bottom: 0.3rem; display: flex; align-items: center; gap: 0.4rem;">
             <span>🎼</span> 수록 악장 구성 (${piece.movements.length} Movements)
           </h4>
           <p style="font-size: 0.8rem; color: var(--text-dim); margin-bottom: 0.75rem;">
@@ -284,69 +552,12 @@ function openPieceModal(pieceId) {
   document.body.style.overflow = 'hidden';
 }
 
-// Open Composer Modal
-function openComposerModal(composerId) {
-  const c = CLASSIC_DATA.composers.find(item => item.id === composerId);
-  if (!c) return;
-
-  const works = CLASSIC_DATA.pieces.filter(p => p.composerId === composerId);
-
-  modalBody.innerHTML = `
-    <div class="modal-content">
-      <button class="modal-close-btn" onclick="closeModal()">✕</button>
-      
-      <div style="padding: 2rem; border-bottom: 1px solid var(--border-color); display: flex; gap: 1.5rem; align-items: center; flex-wrap: wrap;">
-        <img src="${c.avatar}" alt="${c.name}" style="width: 90px; height: 90px; border-radius: 50%; object-fit: cover; border: 3px solid var(--accent-gold);">
-        <div>
-          <span style="font-size: 0.8rem; color: var(--accent-gold); font-weight: 600;">${c.era}</span>
-          <h2 style="font-family: 'Cinzel', serif; font-size: 1.6rem; color: #fff; margin-top: 0.2rem;">${c.name}</h2>
-          <p style="font-size: 0.85rem; color: var(--text-muted);">${c.nameEn} (${c.years} · ${c.country})</p>
-        </div>
-      </div>
-
-      <div class="modal-body">
-        <blockquote style="font-style: italic; color: var(--accent-gold-light); border-left: 3px solid var(--accent-gold); padding: 0.75rem 1rem; margin-bottom: 1.5rem; background: rgba(212,175,55,0.06);">
-          "${c.quote}"
-        </blockquote>
-
-        <div style="margin-bottom: 1.5rem;">
-          <h4 style="color: #fff; margin-bottom: 0.5rem;">생애 및 예술 세계</h4>
-          <p style="font-size: 0.92rem; color: var(--text-muted); line-height: 1.7;">${c.bio}</p>
-        </div>
-
-        <div class="docent-box" style="margin-bottom: 1.75rem;">
-          <div class="docent-title"><span>💡</span> 흥미로운 비하인드 스토리</div>
-          <p class="docent-text">${c.funFact}</p>
-        </div>
-
-        <div>
-          <h4 style="color: #fff; margin-bottom: 0.75rem;">수록된 대표곡 (${works.length})</h4>
-          <div style="display: flex; flex-direction: column; gap: 0.6rem;">
-            ${works.map(w => `
-              <div class="movement-item" onclick="openPieceModal('${w.id}')" style="cursor: pointer;">
-                <div>
-                  <div class="movement-title">${w.title}</div>
-                  <div class="movement-meta">${w.opus || w.year}</div>
-                </div>
-                <button class="btn-docent-sm">해설 보기 ➔</button>
-              </div>
-            `).join('')}
-          </div>
-        </div>
-      </div>
-    </div>
-  `;
-
-  modalBackdrop.style.display = 'flex';
-  document.body.style.overflow = 'hidden';
-}
-
 function closeModal() {
   if (modalBackdrop) modalBackdrop.style.display = 'none';
   document.body.style.overflow = 'auto';
 }
 
-// Deep Linking Playback Helper
+// 11. Deep Linking Playback Helper
 function playPieceExternal(searchQuery, platform = 'ytm') {
   let url = '';
   if (platform === 'ytm') {
@@ -359,7 +570,7 @@ function playPieceExternal(searchQuery, platform = 'ytm') {
   window.open(url, '_blank', 'noopener,noreferrer');
 }
 
-// Filter by Curated Playlist
+// 12. Filter by Curated Playlist
 function filterByPlaylist(playlistId) {
   const pl = CLASSIC_DATA.curatedPlaylists.find(p => p.id === playlistId);
   if (!pl) return;
@@ -371,20 +582,30 @@ function filterByPlaylist(playlistId) {
   const filtered = CLASSIC_DATA.pieces.filter(p => pl.pieceIds.includes(p.id));
   
   if (piecesGrid) {
-    piecesGrid.scrollIntoView({ behavior: 'smooth' });
-    piecesGrid.innerHTML = `
-      <div style="grid-column: 1 / -1; margin-bottom: 1rem; padding: 1rem; background: rgba(212,175,55,0.1); border-radius: var(--radius-md); border: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center;">
-        <div>
-          <span style="font-size: 0.8rem; color: var(--accent-gold);">선택된 테마 플레이리스트</span>
-          <h3 style="color: #fff; font-size: 1.2rem;">${pl.title}</h3>
+    const piecesSection = document.getElementById('sectionPieces');
+    if (piecesSection) {
+      piecesSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    if (curationStatusBannerContainer) {
+      curationStatusBannerContainer.innerHTML = `
+        <div class="curation-status-banner">
+          <div>
+            <div class="title">🎧 테마: ${pl.title} (${filtered.length}곡)</div>
+            <div class="desc">${pl.subtitle}</div>
+          </div>
+          <button class="btn-docent-sm" onclick="resetFilters()">전체보기 ✕</button>
         </div>
-        <button class="btn-docent-sm" onclick="renderPieces()">전체 목록 복원</button>
-      </div>
-    ` + filtered.map(piece => `
-      <div class="piece-card" data-piece-id="${piece.id}">
+      `;
+    }
+
+    piecesGrid.innerHTML = filtered.map(piece => `
+      <div class="piece-card" data-piece-id="${piece.id}" style="animation: fadeIn 0.3s ease;">
         <div class="card-cover">
           <img src="${piece.albumArt}" alt="${piece.title}" loading="lazy" />
-          <div class="card-cover-badge">${piece.opus || piece.year}</div>
+          <div class="card-cover-badges">
+            <span class="card-cover-badge">${piece.opus || piece.year}</span>
+          </div>
           <div class="card-play-overlay" onclick="event.stopPropagation(); playPieceExternal('${piece.searchQuery}', 'ytm')">
             ▶
           </div>
@@ -406,7 +627,7 @@ function filterByPlaylist(playlistId) {
   }
 }
 
-// AI Sommelier Smart Recommendation
+// 13. AI Sommelier Smart Recommendation
 function handleAIPrompt(customText = null) {
   const prompt = (customText || (aiInput ? aiInput.value : '')).trim();
   if (!prompt) return;
@@ -417,54 +638,53 @@ function handleAIPrompt(customText = null) {
   aiResultBox.style.display = 'block';
   aiResultBox.innerHTML = `
     <div style="text-align: center; padding: 1.5rem; color: var(--accent-gold-light);">
-      <p style="font-size: 1.2rem; animation: pulse 1s infinite;">✨ AI 클래식 소믈리에가 선율을 고르는 중입니다...</p>
+      <p style="font-size: 1.05rem; font-weight: 600; animation: pulse 1s infinite;">✨ AI 클래식 소믈리에가 선율을 고르는 중입니다...</p>
     </div>
   `;
 
   setTimeout(() => {
-    // Intelligent Match Engine based on prompt keywords
     let matchedPiece = null;
     let sommelierComment = "";
 
     const pLower = prompt.toLowerCase();
 
     if (pLower.includes("비") || pLower.includes("비오는") || pLower.includes("우울") || pLower.includes("눈물")) {
-      matchedPiece = CLASSIC_DATA.pieces.find(p => p.id === 'piece-4') || CLASSIC_DATA.pieces[0]; // Chopin Raindrop
-      sommelierComment = "비 오는 날의 먹먹한 창밖 풍경에는 처마 끝에서 맑고 투명하게 떨어지는 빗방울을 닮은 쇼팽의 프렐류드가 제격입니다. 당신의 젖은 마음에 따뜻한 온기를 더해줄 거예요.";
+      matchedPiece = CLASSIC_DATA.pieces.find(p => p.id === 'chopin-raindrop') || CLASSIC_DATA.pieces[0];
+      sommelierComment = "비 오는 날의 창밖 풍경에는 처마 끝에서 맑고 투명하게 떨어지는 빗방울을 닮은 쇼팽의 프렐류드가 제격입니다. 당신의 마음에 따뜻한 온기를 더해줄 거예요.";
     } else if (pLower.includes("새벽") || pLower.includes("밤") || pLower.includes("달") || pLower.includes("사색")) {
-      matchedPiece = CLASSIC_DATA.pieces.find(p => p.id === 'piece-8') || CLASSIC_DATA.pieces[0]; // Debussy Clair de lune
+      matchedPiece = CLASSIC_DATA.pieces.find(p => p.id === 'debussy-clair-de-lune') || CLASSIC_DATA.pieces[0];
       sommelierComment = "모두가 잠든 고요한 시간, 달빛이 잔잔한 수면 위로 내려앉듯 영혼을 정화해 주는 드뷔시의 '달빛'을 권해드립니다. 복잡했던 생각들이 은빛 여운 속으로 스르륵 흩어질 것입니다.";
     } else if (pLower.includes("공부") || pLower.includes("집중") || pLower.includes("몰입") || pLower.includes("작업") || pLower.includes("코딩")) {
-      matchedPiece = CLASSIC_DATA.pieces.find(p => p.id === 'piece-7') || CLASSIC_DATA.pieces[5]; // Bach Cello Suite
+      matchedPiece = CLASSIC_DATA.pieces.find(p => p.id === 'bach-cello-suite-1') || CLASSIC_DATA.pieces[1];
       sommelierComment = "산만한 잡념을 걷어내고 깊은 몰입의 뇌파로 유도하는 바흐의 무반주 첼로 모음곡입니다. 단 하나의 악기가 빚어내는 완벽한 질서와 울림이 지적인 집중을 완성해 드립니다.";
     } else if (pLower.includes("열정") || pLower.includes("활력") || pLower.includes("웅장") || pLower.includes("힘") || pLower.includes("운동")) {
-      matchedPiece = CLASSIC_DATA.pieces.find(p => p.id === 'piece-2') || CLASSIC_DATA.pieces[1]; // Beethoven Fate
+      matchedPiece = CLASSIC_DATA.pieces.find(p => p.id === 'beethoven-fate') || CLASSIC_DATA.pieces[1];
       sommelierComment = "무기력함을 부수고 심장을 다시 뛰게 할 불꽃 같은 에너지가 필요한 순간입니다. 가혹한 운명에 굴복하지 않고 끝내 승리를 쟁취하는 베토벤의 운명 교향곡을 들려드립니다.";
     } else if (pLower.includes("휴식") || pLower.includes("커피") || pLower.includes("카페") || pLower.includes("편안") || pLower.includes("수면")) {
-      matchedPiece = CLASSIC_DATA.pieces.find(p => p.id === 'piece-5') || CLASSIC_DATA.pieces[2]; // Mozart PC 21
+      matchedPiece = CLASSIC_DATA.pieces.find(p => p.id === 'mozart-pc-21-andante') || CLASSIC_DATA.pieces[2];
       sommelierComment = "티 없이 맑은 햇살 아래 따뜻한 차 한 잔을 마시는 듯한 평화. 천상의 순수함을 담은 모차르트 피아노 협주곡 21번 2악장 안단테로 마음의 긴장을 부드럽게 이완해 보세요.";
     } else {
-      matchedPiece = CLASSIC_DATA.pieces.find(p => p.id === 'piece-3') || CLASSIC_DATA.pieces[0]; // Chopin Nocturne
+      matchedPiece = CLASSIC_DATA.pieces.find(p => p.id === 'chopin-nocturne-9-2') || CLASSIC_DATA.pieces[0];
       sommelierComment = `"${prompt}"에 머무는 당신의 마음에 가장 어루만져 주는 선율로, 밤의 서정을 시처럼 노래한 쇼팽의 녹턴을 추천해 드립니다.`;
     }
 
     aiResultBox.innerHTML = `
       <div style="border-left: 3px solid var(--accent-gold); padding-left: 1rem; margin-bottom: 1rem;">
-        <span style="font-size: 0.78rem; color: var(--accent-gold); font-weight: 700; letter-spacing: 0.05em;">AI SOMMELIER'S NOTE</span>
-        <p style="font-size: 0.95rem; color: #fff; margin-top: 0.3rem; line-height: 1.6;">
+        <span style="font-size: 0.78rem; color: var(--accent-gold); font-weight: 800; letter-spacing: 0.05em;">AI SOMMELIER'S NOTE</span>
+        <p style="font-size: 0.94rem; color: #fff; margin-top: 0.3rem; line-height: 1.6;">
           "${sommelierComment}"
         </p>
       </div>
-      <div style="display: flex; gap: 1rem; align-items: center; background: rgba(255,255,255,0.04); padding: 0.9rem; border-radius: var(--radius-sm); justify-content: space-between; flex-wrap: wrap;">
+      <div style="display: flex; gap: 1rem; align-items: center; background: rgba(255,255,255,0.05); padding: 0.9rem; border-radius: var(--radius-sm); justify-content: space-between; flex-wrap: wrap;">
         <div style="display: flex; gap: 0.85rem; align-items: center;">
-          <img src="${matchedPiece.albumArt}" alt="${matchedPiece.title}" style="width: 54px; height: 54px; border-radius: 8px; object-fit: cover;">
+          <img src="${matchedPiece.albumArt}" alt="${matchedPiece.title}" style="width: 52px; height: 52px; border-radius: 8px; object-fit: cover;">
           <div>
-            <div style="font-size: 0.78rem; color: var(--accent-gold);">${matchedPiece.composerName}</div>
+            <div style="font-size: 0.78rem; font-weight: 700; color: var(--accent-gold);">${matchedPiece.composerName}</div>
             <div style="font-size: 0.95rem; font-weight: 700; color: #fff;">${matchedPiece.title}</div>
-            <div style="font-size: 0.75rem; color: var(--text-dim);">${matchedPiece.opus || matchedPiece.year}</div>
+            <div style="font-size: 0.75rem; color: var(--text-dim);">${pieceMeta(matchedPiece)}</div>
           </div>
         </div>
-        <div style="display: flex; gap: 0.5rem;">
+        <div style="display: flex; gap: 0.5rem; width: 100%; justify-content: flex-end;">
           <button class="btn-docent-sm" onclick="openPieceModal('${matchedPiece.id}')">📖 스토리 보기</button>
           <a href="https://music.youtube.com/search?q=${encodeURIComponent(matchedPiece.searchQuery)}" target="_blank" rel="noopener noreferrer" class="btn-stream btn-ytm" style="padding: 0.35rem 0.75rem; font-size: 0.78rem;">
             ▶ 바로 듣기
@@ -472,5 +692,105 @@ function handleAIPrompt(customText = null) {
         </div>
       </div>
     `;
-  }, 500);
+  }, 400);
+}
+
+function pieceMeta(p) {
+  return p.opus ? p.opus : `${p.year}년 작곡`;
+}
+
+// 14. PWA Service Worker & Install Logic
+function registerServiceWorker() {
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('./sw.js')
+        .then((reg) => console.log('[PWA] Service Worker active, scope:', reg.scope))
+        .catch((err) => console.warn('[PWA] Service Worker registration failed:', err));
+    });
+  }
+}
+
+function setupPWAInstall() {
+  const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+  if (isStandalone) {
+    if (pwaBanner) pwaBanner.style.display = 'none';
+    if (btnInstallHeader) btnInstallHeader.style.display = 'none';
+    return;
+  }
+
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    state.deferredPrompt = e;
+    if (btnInstallHeader) btnInstallHeader.style.display = 'inline-flex';
+    if (pwaBanner && !sessionStorage.getItem('opus_banner_dismissed')) {
+      pwaBanner.style.display = 'flex';
+    }
+  });
+
+  const triggerInstall = async () => {
+    if (state.deferredPrompt) {
+      state.deferredPrompt.prompt();
+      const { outcome } = await state.deferredPrompt.userChoice;
+      console.log('[PWA] User response to install:', outcome);
+      state.deferredPrompt = null;
+      if (pwaBanner) pwaBanner.style.display = 'none';
+    } else {
+      showIOSInstallGuide();
+    }
+  };
+
+  if (btnInstallHeader) btnInstallHeader.addEventListener('click', triggerInstall);
+  if (btnInstallBanner) btnInstallBanner.addEventListener('click', triggerInstall);
+  
+  if (btnDismissBanner) {
+    btnDismissBanner.addEventListener('click', () => {
+      if (pwaBanner) pwaBanner.style.display = 'none';
+      sessionStorage.setItem('opus_banner_dismissed', 'true');
+    });
+  }
+
+  window.addEventListener('appinstalled', () => {
+    console.log('[PWA] App installed successfully');
+    if (pwaBanner) pwaBanner.style.display = 'none';
+    if (btnInstallHeader) btnInstallHeader.style.display = 'none';
+  });
+}
+
+function showIOSInstallGuide() {
+  modalBody.innerHTML = `
+    <div class="modal-content" style="max-width: 480px;">
+      <div class="bottom-sheet-handle"></div>
+      <button class="modal-close-btn" onclick="closeModal()">✕</button>
+      <div class="modal-body" style="text-align: center; padding: 2rem 1.5rem;">
+        <div style="font-size: 2.8rem; margin-bottom: 0.75rem;">📲</div>
+        <h3 style="font-size: 1.35rem; font-weight: 800; color: var(--accent-gold-light); margin-bottom: 0.5rem;">
+          스마트폰 홈 화면에 앱 추가하기
+        </h3>
+        <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 1.5rem;">
+          Chrome 또는 Safari 브라우저에서 아래 순서대로 누르면 설치형 앱으로 언제든 바로 실행할 수 있습니다.
+        </p>
+        
+        <div style="text-align: left; background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.2rem; display: flex; flex-direction: column; gap: 0.9rem; font-size: 0.88rem; color: #fff;">
+          <div style="display: flex; gap: 0.75rem; align-items: center;">
+            <span style="background: var(--accent-gold); color: #000; border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.8rem; flex-shrink: 0;">1</span>
+            <span>브라우저 하단 또는 상단의 <strong>[공유(Share)]</strong> 또는 <strong>[메뉴(⋮)]</strong> 버튼 탭</span>
+          </div>
+          <div style="display: flex; gap: 0.75rem; align-items: center;">
+            <span style="background: var(--accent-gold); color: #000; border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.8rem; flex-shrink: 0;">2</span>
+            <span>목록에서 <strong>[홈 화면에 추가]</strong> 또는 <strong>[앱 설치]</strong> 선택</span>
+          </div>
+          <div style="display: flex; gap: 0.75rem; align-items: center;">
+            <span style="background: var(--accent-gold); color: #000; border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.8rem; flex-shrink: 0;">3</span>
+            <span>우측 상단의 <strong>[추가]</strong>를 누르면 설치 완료!</span>
+          </div>
+        </div>
+
+        <button class="btn-primary" onclick="closeModal()" style="margin-top: 1.5rem; width: 100%; justify-content: center;">
+          확인했습니다
+        </button>
+      </div>
+    </div>
+  `;
+  modalBackdrop.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
 }

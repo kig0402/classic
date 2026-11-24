@@ -1,9 +1,9 @@
 /**
- * OPUS PWA Service Worker
- * 오프라인 지원 및 캐싱 전략
+ * OPUS PWA Service Worker (v2)
+ * 오프라인 지원 및 캐싱 전략 (최신 Pretendard 폰트 및 모바일 스크립트 갱신)
  */
 
-const CACHE_NAME = 'opus-classic-v1';
+const CACHE_NAME = 'opus-classic-v2';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
@@ -20,7 +20,7 @@ const ASSETS_TO_CACHE = [
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
-      console.log('[Service Worker] Pre-caching offline assets');
+      console.log('[Service Worker] Pre-caching offline assets v2');
       return cache.addAll(ASSETS_TO_CACHE);
     }).then(() => self.skipWaiting())
   );
@@ -42,26 +42,23 @@ self.addEventListener('activate', (event) => {
   );
 });
 
-// Fetch Event: Network first with Cache fallback for app files
+// Fetch Event: Stale-While-Revalidate
 self.addEventListener('fetch', (event) => {
-  // Only handle GET requests and local scope
   if (event.request.method !== 'GET') return;
 
   const url = new URL(event.request.url);
 
-  // If request is within our origin
   if (url.origin === self.location.origin) {
     event.respondWith(
       caches.match(event.request).then((cachedResponse) => {
         if (cachedResponse) {
-          // Fetch updated version in background (Stale-While-Revalidate)
           fetch(event.request).then((networkResponse) => {
             if (networkResponse && networkResponse.status === 200) {
               caches.open(CACHE_NAME).then((cache) => {
                 cache.put(event.request, networkResponse.clone());
               });
             }
-          }).catch(() => {/* offline fallback */});
+          }).catch(() => {});
 
           return cachedResponse;
         }
