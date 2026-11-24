@@ -482,7 +482,7 @@ main.container {
 }
 
 /* Mood Filters Pill Bar */
-.mood-pills {
+.mood-pills, .period-pills {
   display: flex;
   gap: 0.65rem;
   overflow-x: auto;
@@ -491,11 +491,11 @@ main.container {
   scrollbar-width: none;
   -webkit-overflow-scrolling: touch;
 }
-.mood-pills::-webkit-scrollbar {
+.mood-pills::-webkit-scrollbar, .period-pills::-webkit-scrollbar {
   display: none;
 }
 
-.mood-pill {
+.mood-pill, .period-pill {
   flex-shrink: 0;
   display: inline-flex;
   align-items: center;
@@ -512,11 +512,11 @@ main.container {
   transition: var(--transition);
 }
 
-.mood-pill:active {
+.mood-pill:active, .period-pill:active {
   transform: scale(0.95);
 }
 
-.mood-pill.active {
+.mood-pill.active, .period-pill.active {
   background: rgba(212, 175, 55, 0.22);
   border-color: var(--accent-gold);
   color: var(--accent-gold-light);

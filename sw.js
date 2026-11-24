@@ -1,9 +1,9 @@
 /**
- * OPUS PWA Service Worker (v2)
- * 오프라인 지원 및 캐싱 전략 (최신 Pretendard 폰트 및 모바일 스크립트 갱신)
+ * OPUS PWA Service Worker (v3)
+ * 12대 작곡가, 10대 무드 테마, 유튜브 뮤직 전세계 음원 연동 캐시
  */
 
-const CACHE_NAME = 'opus-classic-v2';
+const CACHE_NAME = 'opus-classic-v3';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
@@ -16,11 +16,11 @@ const ASSETS_TO_CACHE = [
   './icon-512.png'
 ];
 
-// Install Event: Precache core assets
+// Install Event
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
-      console.log('[Service Worker] Pre-caching offline assets v2');
+      console.log('[Service Worker] Pre-caching offline assets v3');
       return cache.addAll(ASSETS_TO_CACHE);
     }).then(() => self.skipWaiting())
   );

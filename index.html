@@ -51,7 +51,7 @@
     <div class="header-right">
       <form class="search-form" id="searchForm" onsubmit="handleSearchSubmit(event)">
         <button type="submit" class="search-icon-btn" title="검색 실행">🔍</button>
-        <input type="text" id="searchInput" placeholder="곡명, 작곡가(베토벤, 쇼팽 등) 검색..." autocomplete="off">
+        <input type="text" id="searchInput" placeholder="곡명, 작곡가(쇼팽, 슈베르트, 비발디 등) 검색..." autocomplete="off">
         <button type="button" class="search-clear-btn" id="searchClearBtn" onclick="clearSearch()" title="검색어 지우기">✕</button>
       </form>
       <button class="btn-install-header" id="btnInstallHeader" title="스마트폰 앱으로 설치">
@@ -168,11 +168,21 @@
         <div>
           <div class="section-title">
             <span>위대한 작곡가들의 방</span>
-            <span class="badge">Composers Hall</span>
+            <span class="badge">12인의 거장</span>
           </div>
           <p class="section-subtitle">작곡가를 클릭하면 대표 명곡 큐레이션과 생애 비하인드를 바로 볼 수 있습니다.</p>
         </div>
       </div>
+
+      <!-- Composer Era Period Filter Pills -->
+      <div class="period-pills" style="margin-bottom: 1.25rem;">
+        <button class="period-pill active" onclick="filterComposersByPeriod(this, 'all')">전체 거장 (12인)</button>
+        <button class="period-pill" onclick="filterComposersByPeriod(this, 'baroque')">바로크 (바흐, 비발디)</button>
+        <button class="period-pill" onclick="filterComposersByPeriod(this, 'classic')">고전주의 (모차르트, 베토벤)</button>
+        <button class="period-pill" onclick="filterComposersByPeriod(this, 'romantic')">낭만주의 (쇼팽, 슈베르트, 브람스 등)</button>
+        <button class="period-pill" onclick="filterComposersByPeriod(this, 'impressionism')">인상주의 (드뷔시)</button>
+      </div>
+
       <div class="composers-grid" id="composersGrid"></div>
     </section>
 

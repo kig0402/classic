@@ -1,6 +1,6 @@
 /**
- * OPUS (오푸스) - Classical Music Dataset (Enhanced Edition)
- * 작곡가 정보, 작곡가별 대표 명곡 랭킹, 곡 배경과 해석, 악장별 구성, 분위기 태그
+ * OPUS (오푸스) - Master Classical Dataset (Greatly Expanded Edition)
+ * 12대 거장 작곡가, 10대 감성/무드 큐레이션, 60여개 불멸의 클래식 명곡 컬렉션
  */
 
 const CLASSIC_DATA = {
@@ -9,55 +9,112 @@ const CLASSIC_DATA = {
       id: "beethoven",
       name: "루트비히 판 베토벤",
       nameEn: "Ludwig van Beethoven",
-      era: "고전-낭만주의 전환기 (Classic to Romantic)",
+      era: "고전-낭만주의 전환기",
+      period: "classic-romantic",
       years: "1770 - 1827",
       country: "독일 / 오스트리아",
       avatar: "https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=600&q=80",
       quote: "고뇌를 넘어 환희로. 나는 고난 속에서도 음악을 통해 운명의 목을 쥐겠다.",
-      bio: "인류 역사상 가장 위대한 음악가. 20대 후반부터 시작된 청력 상실이라는 가혹한 비극 속에서도 '불굴의 의지'로 교향곡, 소나타, 협주곡의 새 시대를 열었습니다.",
-      funFact: "베토벤은 매일 아침 커피를 마실 때 정확히 원두 60알을 직접 세어 내릴 정도로 지독한 완벽주의자였습니다."
+      bio: "인류 역사상 가장 위대한 음악가. 20대 후반부터 시작된 청력 상실이라는 치명적 비극 속에서도 '불굴의 의지'로 교향곡, 소나타, 협주곡의 새 지평을 열었습니다.",
+      funFact: "매일 아침 커피를 끓일 때 정확히 원두 60알을 세어서 마시는 지독한 완벽주의자였습니다."
     },
     {
       id: "chopin",
       name: "프레데리크 쇼팽",
       nameEn: "Frédéric Chopin",
-      era: "초기 낭만주의 (Early Romantic)",
+      era: "초기 낭만주의",
+      period: "romantic",
       years: "1810 - 1849",
       country: "폴란드 / 프랑스",
       avatar: "https://images.unsplash.com/photo-1520523839898-507125cd53c1?auto=format&fit=crop&w=600&q=80",
       quote: "단어의 끝에서 음악이 시작된다. 단순함은 예술의 궁극적인 성취다.",
-      bio: "'피아노의 시인'으로 불리며, 평생 거의 모든 작품을 피아노로만 작곡했습니다. 조국 폴란드를 향한 애절한 향수와 섬세한 루바토 선율로 낭만주의 피아노의 절정을 이룩했습니다.",
-      funFact: "체구가 매우 가냘팠던 쇼팽은 대규모 콘서트홀보다 살롱(Salon)에서 지인들과 함께 나누는 친밀한 연주를 사랑했습니다."
+      bio: "'피아노의 시인'으로 불리며 평생 거의 모든 작품을 피아노곡으로만 작곡했습니다. 고국 폴란드를 향한 애절한 향수와 섬세한 루바토 선율로 낭만주의 피아노의 절정을 이룩했습니다.",
+      funFact: "체구가 매우 가냘팠던 쇼팽은 대규모 콘서트홀보다 지인들과 함께하는 친밀한 살롱 연주를 훨씬 선호했습니다."
     },
     {
       id: "mozart",
       name: "볼프강 아마데우스 모차르트",
       nameEn: "Wolfgang Amadeus Mozart",
-      era: "고전주의 (Classical)",
+      era: "고전주의",
+      period: "classic",
       years: "1756 - 1791",
       country: "오스트리아",
       avatar: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=600&q=80",
       quote: "음악은 결코 귀를 괴롭혀서는 안 되며, 언제나 듣는 이를 즐겁게 해야 한다.",
-      bio: "35년의 짧은 생애 동안 600곡이 넘는 천상의 명곡을 남긴 불세출의 천재. 티 없이 맑은 순수함과 완벽한 형식미를 동시에 구현했습니다.",
+      bio: "35년의 생애 동안 600곡이 넘는 천상의 명곡을 남긴 인류 최고의 천재. 티 없이 맑은 순수함과 완벽한 균형미를 선사합니다.",
       funFact: "유쾌하고 장난기가 넘쳤던 모차르트는 가족과 친구들에게 보낸 편지에 기상천외한 농담과 말장난을 가득 남겼습니다."
     },
     {
       id: "bach",
       name: "요한 제바스티안 바흐",
       nameEn: "Johann Sebastian Bach",
-      era: "바로크 (Baroque)",
+      era: "바로크",
+      period: "baroque",
       years: "1685 - 1750",
       country: "독일",
       avatar: "https://images.unsplash.com/photo-1507838153414-b4b713384a76?auto=format&fit=crop&w=600&q=80",
       quote: "음악의 궁극적인 목적은 오직 신의 영광과 인간 영혼의 위로뿐이다.",
       bio: "'서양 음악의 아버지'라 불리며 바로크 대위법과 화성학을 완성했습니다. 수학처럼 정교한 건축적 질서 속에 깊고 성스러운 영성을 담았습니다.",
-      funFact: "바흐는 일생 동안 1,000곡이 넘는 걸작을 남겼으며, 20명의 자녀 중 여러 명을 당대 최고의 음악가로 길러냈습니다."
+      funFact: "평생 1,000곡이 넘는 걸작을 남겼으며, 20명의 자녀 중 여러 명을 당대 최고의 음악가로 길러냈습니다."
+    },
+    {
+      id: "schubert",
+      name: "프란츠 슈베르트",
+      nameEn: "Franz Schubert",
+      era: "초기 낭만주의",
+      period: "romantic",
+      years: "1797 - 1828",
+      country: "오스트리아",
+      avatar: "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?auto=format&fit=crop&w=600&q=80",
+      quote: "내가 고통 속에서 쓴 음악들이 세상 사람들에게 가장 큰 기쁨을 주는구나.",
+      bio: "'가곡의 왕'으로 불리며 31세의 짧은 생애 동안 600여 편의 예술가곡과 아름다운 실내악, 교향곡을 남겼습니다. 서정적이고 눈물겨운 멜로디의 화신입니다.",
+      funFact: "지독한 근시여서 잠잘 때도 침대 머리맡에 안경을 끼고 자며, 꿈속에서 떠오른 악상을 깨자마자 악보에 적었습니다."
+    },
+    {
+      id: "vivaldi",
+      name: "안토니오 비발디",
+      nameEn: "Antonio Vivaldi",
+      era: "바로크",
+      period: "baroque",
+      years: "1678 - 1741",
+      country: "이탈리아",
+      avatar: "https://images.unsplash.com/photo-1518495973542-4542c06a5843?auto=format&fit=crop&w=600&q=80",
+      quote: "이탈리아의 태양과 자연의 사계절이 바로 내 음악의 스승이다.",
+      bio: "'붉은 머리의 사제'라는 별칭을 가졌던 이탈리아 바로크 최고의 바이올린 비르투오소. '사계'를 비롯해 생동감 넘치는 500여 곡의 협주곡을 작곡했습니다.",
+      funFact: "베네치아 피에타 고아원의 소녀 음악대를 지도하며 수많은 명협주곡을 완성해 유럽 전역에 명성을 떨쳤습니다."
+    },
+    {
+      id: "brahms",
+      name: "요하네스 브람스",
+      nameEn: "Johannes Brahms",
+      era: "후기 낭만주의",
+      period: "romantic",
+      years: "1833 - 1897",
+      country: "독일 / 오스트리아",
+      avatar: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=600&q=80",
+      quote: "단순한 멜로디 속에 인생의 가장 깊은 사색과 우수가 깃들어 있다.",
+      bio: "바흐, 베토벤과 함께 독일 음악의 '3대 B'로 꼽히는 거장. 낭만주의 시대에 고전주의적 엄격한 형식미와 가슴 저미는 가을빛 우수를 완벽히 융합했습니다.",
+      funFact: "스승 슈만의 아내 클라라 슈만을 평생 동안 헌신적으로 사랑하며 평생 독신으로 살았습니다."
+    },
+    {
+      id: "rachmaninoff",
+      name: "세르게이 라흐마니노프",
+      nameEn: "Sergei Rachmaninoff",
+      era: "후기 낭만주의",
+      period: "romantic",
+      years: "1873 - 1943",
+      country: "러시아 / 미국",
+      avatar: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=600&q=80",
+      quote: "음악은 심장에서 나와 다시 심장으로 들어가야 한다.",
+      bio: "러시아 낭만주의 최후의 거장이자 당대 최고의 거인 피아니스트. 손이 13도 음정까지 닿을 만큼 거대했으며, 가슴을 뒤흔드는 드라마틱한 선율미를 자랑합니다.",
+      funFact: "교향곡 1번 초연 실패 후 극심한 우울증에 걸려 최면 요법 치료를 받은 끝에 불후의 '피아노 협주곡 2번'으로 화려하게 부활했습니다."
     },
     {
       id: "debussy",
       name: "클로드 드뷔시",
       nameEn: "Claude Debussy",
-      era: "인상주의 (Impressionism)",
+      era: "인상주의",
+      period: "impressionism",
       years: "1862 - 1918",
       country: "프랑스",
       avatar: "https://images.unsplash.com/photo-1465847899084-d164df4dedc6?auto=format&fit=crop&w=600&q=80",
@@ -69,29 +126,202 @@ const CLASSIC_DATA = {
       id: "tchaikovsky",
       name: "표트르 차이콥스키",
       nameEn: "Pyotr Ilyich Tchaikovsky",
-      era: "후기 낭만주의 (Late Romantic)",
+      era: "후기 낭만주의",
+      period: "romantic",
       years: "1840 - 1893",
       country: "러시아",
-      avatar: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=600&q=80",
+      avatar: "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=600&q=80",
       quote: "영감은 게으른 자를 찾아오지 않는다. 나는 매일 정해진 시간에 피아노 앞에 앉는다.",
-      bio: "러시아 특유의 짙은 우수와 애수, 가슴을 저미는 낭만적 선율의 거장. '백조의 호수', '호두까기 인형' 등 불후의 발레 음악과 교향곡을 남겼습니다.",
-      funFact: "차이콥스키는 폰 메크 부인으로부터 13년간 거액의 후원을 받았지만 '단 한 번도 직접 만나지 않는다'는 약속을 지켰습니다."
+      bio: "러시아 특유의 짙은 애수와 가슴을 울리는 극적인 멜로디의 대가. '백조의 호수', '호두까기 인형' 등 불후의 발레 음악과 장엄한 교향곡을 남겼습니다.",
+      funFact: "후원자 폰 메크 부인과 13년간 수백 통의 편지를 주고받으면서도 단 한 번도 마주치지 않는다는 독특한 조건을 지켰습니다."
+    },
+    {
+      id: "liszt",
+      name: "프란츠 리스트",
+      nameEn: "Franz Liszt",
+      era: "낭만주의",
+      period: "romantic",
+      years: "1811 - 1886",
+      country: "헝가리 / 오스트리아",
+      avatar: "https://images.unsplash.com/photo-1510915361894-db8b60106cb1?auto=format&fit=crop&w=600&q=80",
+      quote: "음악은 무한을 향한 인간 영혼의 비상이다.",
+      bio: "'피아노의 신'이라 불린 역사상 최고의 피아노 비르투오소이자 작곡가. 피아노 독주회를 뜻하는 '리사이틀(Recital)'이라는 단어를 최초로 만들었습니다.",
+      funFact: "연주 도중 그의 피아노 줄이 끊어지기 일쑤였으며, 그가 버린 장갑이나 찻잔 조각을 얻으려 여성 관객들이 결투를 벌이기도 했습니다(리스토마니아 현상)."
+    },
+    {
+      id: "grieg",
+      name: "에드바르 그리그",
+      nameEn: "Edvard Grieg",
+      era: "국민악파 / 낭만주의",
+      period: "romantic",
+      years: "1843 - 1907",
+      country: "노르웨이",
+      avatar: "https://images.unsplash.com/photo-1515694346937-94d85e41e6f0?auto=format&fit=crop&w=600&q=80",
+      quote: "나는 피오르의 맑은 바람과 북유럽의 숲을 노래하는 음유시인이다.",
+      bio: "'북구의 쇼팽'이라 불리며 노르웨이의 청량한 피오르 자연과 북유럽 민속 선율을 환상적인 서정성으로 그려낸 국민악파 거장입니다.",
+      funFact: "연주회 무대에 오를 때마다 외투 주머니 속에 작은 행운의 개구리 인형을 넣고 다녔습니다."
     }
   ],
 
+  // 10대 감성 & 분위기별 큐레이션 테마
   moods: [
-    { id: "all", name: "전체보기", icon: "✨", desc: "모든 클래식 명곡 모음" },
+    { id: "all", name: "전체보기", icon: "✨", desc: "모든 클래식 명곡 컬렉션" },
     { id: "dawn", name: "새벽 감성 & 사색", icon: "🌙", desc: "깊은 밤, 고요한 생각에 잠기고 싶을 때" },
     { id: "focus", name: "깊은 몰입 & 스터디", icon: "📚", desc: "집중력과 작업 효율을 극대화하는 선율" },
     { id: "rainy", name: "비 오는 날의 서정", icon: "🌧️", desc: "창밖 빗소리와 어우러지는 아련한 첼로와 피아노" },
-    { id: "relax", name: "휴식 & 수면", icon: "☕", desc: "지친 하루를 보듬고 편안한 안식으로 이끄는 선율" },
-    { id: "heroic", name: "열정 & 벅찬 활력", icon: "🔥", desc: "가슴을 뛰게 하고 무기력함을 깨우는 웅장함" }
+    { id: "relax", name: "여유로운 휴식 & 카페", icon: "☕", desc: "따뜻한 티타임과 햇살 아래 편안한 쉼" },
+    { id: "sleep", name: "포근한 수면 & 릴랙스", icon: "🛌", desc: "지친 하루의 긴장을 풀고 깊은 잠으로 이끄는 자장가" },
+    { id: "heroic", name: "가슴 벅찬 열정 & 활력", icon: "🔥", desc: "심장을 뛰게 하고 무기력함을 깨우는 웅장함" },
+    { id: "morning", name: "상쾌한 아침 기상", icon: "☀️", desc: "기분 좋은 햇살과 함께 하루를 여는 밝은 선율" },
+    { id: "comfort", name: "슬픔 & 지친 마음의 위로", icon: "🩹", desc: "눈물 날 때 따뜻하게 안아주는 치유의 선율" },
+    { id: "romantic", name: "로맨틱 & 사랑의 설렘", icon: "🌹", desc: "와인 한잔, 사랑하는 이와 함께 나누고픈 선율" }
   ],
 
+  // 60여개 불멸의 클래식 명곡 마스터 리스트
   pieces: [
-    // ----------------------------------------------------
-    // 베토벤 대표 명곡
-    // ----------------------------------------------------
+    // ==========================================
+    // 🎹 쇼팽 (Chopin) - 피아노의 시인
+    // ==========================================
+    {
+      id: "chopin-nocturne-9-2",
+      title: "야상곡(녹턴) 제2번 Eb장조 (Op.9 No.2)",
+      titleEn: "Nocturne in E-flat major, Op. 9 No. 2",
+      composerId: "chopin",
+      composerName: "프레데리크 쇼팽",
+      opus: "Op. 9 No. 2",
+      year: "1832",
+      signatureRank: 1,
+      moods: ["dawn", "relax", "romantic", "sleep"],
+      albumArt: "https://images.unsplash.com/photo-1518495973542-4542c06a5843?auto=format&fit=crop&w=800&q=80",
+      description: "세상에서 가장 유명한 피아노 야상곡. 달콤하고 부드럽게 밤의 정취를 노래하는 시적 선율.",
+      backgroundStory: "20대 초반 파리에 도착한 직후 작곡된 곡으로, 파리 살롱에서 쇼팽의 시적 연주에 매료된 귀족 부인 마리 플레옐에게 헌정되었습니다.",
+      interpretation: "왼손의 안정적인 왈츠 반주 위에 오른손이 벨칸토 오페라처럼 감미롭게 노래합니다.",
+      movements: [{ no: "단일 악장", title: "Andante", tempo: "느리게 걷듯이", desc: "밤의 서정과 화려한 카덴차" }],
+      searchQuery: "Chopin Nocturne Op 9 No 2 Rubinstein"
+    },
+    {
+      id: "chopin-raindrop",
+      title: "빗방울 전주곡 (Op.28 No.15)",
+      titleEn: "Prelude in D-flat major 'Raindrop'",
+      composerId: "chopin",
+      composerName: "프레데리크 쇼팽",
+      opus: "Op. 28 No. 15",
+      year: "1839",
+      signatureRank: 2,
+      moods: ["rainy", "dawn", "focus", "comfort"],
+      albumArt: "https://images.unsplash.com/photo-1515694346937-94d85e41e6f0?auto=format&fit=crop&w=800&q=80",
+      description: "지속해서 똑똑 떨어지는 빗방울 소리. 요양지의 고독과 폭풍우의 공포를 담아낸 걸작.",
+      backgroundStory: "스페인 마요르카 섬으로 요양을 떠났을 때, 끝없는 겨울비 속에서 홀로 지붕에서 떨어지는 빗방울 소리를 들으며 썼습니다.",
+      interpretation: "곡 전체를 관통하는 Ab(G#) 음의 지속적인 연타가 빗방울을 상징합니다.",
+      movements: [{ no: "단일 악장", title: "Sostenuto", tempo: "음 하나하나를 충실히", desc: "처마 끝 빗방울과 중간부의 긴장" }],
+      searchQuery: "Chopin Raindrop Prelude Seong-Jin Cho"
+    },
+    {
+      id: "chopin-fantaisie-impromptu",
+      title: "즉흥환상곡 C#단조 (Op.66)",
+      titleEn: "Fantaisie-Impromptu in C-sharp minor",
+      composerId: "chopin",
+      composerName: "프레데리크 쇼팽",
+      opus: "Op. 66",
+      year: "1834",
+      signatureRank: 3,
+      moods: ["heroic", "focus"],
+      albumArt: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=800&q=80",
+      description: "건반 위를 질주하는 마법 같은 16분음표와 감미로운 중간부 칸타빌레의 눈부신 조화.",
+      backgroundStory: "생전에는 출판되지 않고 서랍 속에 봉인되어 있었으나, 사후 유언 집행자 폰타나가 출판하여 대성공을 거두었습니다.",
+      interpretation: "오른손의 16분음표 4개와 왼손의 셋잇단음표 3개가 빚어내는 복합 리듬(Polyrhythm)의 신비로움이 압권입니다.",
+      movements: [{ no: "단일 악장", title: "Allegro agitato", tempo: "격렬하고 빠르게", desc: "질주하는 아르페지오와 감미로운 선율" }],
+      searchQuery: "Chopin Fantaisie Impromptu Yundi Li"
+    },
+    {
+      id: "chopin-tristesse",
+      title: "에튀드 Op.10 No.3 '이별의 곡'",
+      titleEn: "Étude Op. 10 No. 3 'Tristesse'",
+      composerId: "chopin",
+      composerName: "프레데리크 쇼팽",
+      opus: "Op. 10 No. 3",
+      year: "1832",
+      signatureRank: 4,
+      moods: ["rainy", "comfort", "dawn", "romantic"],
+      albumArt: "https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=800&q=80",
+      description: "쇼팽 스스로 '내 평생 이렇게 아름다운 멜로디는 다시 쓰지 못했다'고 고백한 눈물의 선율.",
+      backgroundStory: "고국 폴란드의 혁명이 실패로 끝나 다시는 조국으로 돌아갈 수 없게 된 젊은 쇼팽이 흘린 망향의 눈물이 고스란히 담겨 있습니다.",
+      interpretation: "절제된 슬픔으로 시작해 중간부의 불꽃 같은 절규를 거쳐 다시 고요한 체념으로 돌아오는 완벽한 서정시입니다.",
+      movements: [{ no: "단일 곡", title: "Lento ma non troppo", tempo: "느리지만 너무 처지지 않게", desc: "가장 아름다운 망향의 송가" }],
+      searchQuery: "Chopin Etude Op 10 No 3 Pollini"
+    },
+    {
+      id: "chopin-revolutionary",
+      title: "에튀드 Op.10 No.12 '혁명'",
+      titleEn: "Étude Op. 10 No. 12 'Revolutionary'",
+      composerId: "chopin",
+      composerName: "프레데리크 쇼팽",
+      opus: "Op. 10 No. 12",
+      year: "1831",
+      signatureRank: 5,
+      moods: ["heroic"],
+      albumArt: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=800&q=80",
+      description: "왼손의 폭풍 같은 하강 음형과 오른손의 비장한 화음이 조국 폴란드의 함성을 토해냅니다.",
+      backgroundStory: "조국 바르샤바가 러시아 군대에 함락되었다는 비보를 접한 쇼팽이 분노와 절망 속에서 피아노를 부술 듯 써 내려간 곡입니다.",
+      interpretation: "왼손의 격렬한 패시지는 피 흘리는 조국의 강물을, 오른손의 단호한 화음은 결코 꺾이지 않는 민족혼을 상징합니다.",
+      movements: [{ no: "단일 곡", title: "Allegro con fuoco", tempo: "불같이 빠르고 격렬하게", desc: "폭풍처럼 몰아치는 왼손 아르페지오" }],
+      searchQuery: "Chopin Revolutionary Etude Richter"
+    },
+    {
+      id: "chopin-heroic-polonaise",
+      title: "폴로네이즈 제6번 Ab장조 '영웅' (Op.53)",
+      titleEn: "Polonaise in A-flat major 'Heroic'",
+      composerId: "chopin",
+      composerName: "프레데리크 쇼팽",
+      opus: "Op. 53",
+      year: "1842",
+      signatureRank: 6,
+      moods: ["heroic", "morning"],
+      albumArt: "https://images.unsplash.com/photo-1465847899084-d164df4dedc6?auto=format&fit=crop&w=800&q=80",
+      description: "당당한 기마부대의 질주와 찬란한 승리의 행진. 피아노로 표현할 수 있는 웅장함의 극치.",
+      backgroundStory: "조르주 상드가 이 곡을 듣고 '영웅적이며 영감을 주는 걸작'이라 감탄하여 '영웅 폴로네이즈'라는 이름이 붙었습니다.",
+      interpretation: "중간부 왼손의 끝없는 옥타브 연타는 마치 기사들이 지평선을 향해 돌격하는 말발굽 소리를 연상시킵니다.",
+      movements: [{ no: "단일 곡", title: "Maestoso", tempo: "위풍당당하게", desc: "장대한 인트로와 거침없는 영웅의 춤" }],
+      searchQuery: "Chopin Heroic Polonaise Op 53 Seong-Jin Cho"
+    },
+    {
+      id: "chopin-minute-waltz",
+      title: "왈츠 제6번 Db장조 '강아지 왈츠' (Op.64 No.1)",
+      titleEn: "Minute Waltz in D-flat major, Op. 64 No. 1",
+      composerId: "chopin",
+      composerName: "프레데리크 쇼팽",
+      opus: "Op. 64 No. 1",
+      year: "1847",
+      signatureRank: 7,
+      moods: ["morning", "relax"],
+      albumArt: "https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=800&q=80",
+      description: "자기 꼬리를 물려고 뱅글뱅글 도는 귀여운 강아지의 몸짓을 그린 사랑스러운 왈츠.",
+      backgroundStory: "연인 조르주 상드의 애완견 '마르키'가 꼬리를 쫓아 빙글빙글 도는 모습을 보고 상드가 '이 모습을 피아노로 그려보라'고 제안해 탄생했습니다.",
+      interpretation: "경쾌하고 빠른 16분음표의 회전 선율이 앙증맞은 미소를 자아냅니다.",
+      movements: [{ no: "단일 곡", title: "Molto vivace", tempo: "매우 활기차게", desc: "재치 있고 사랑스러운 왈츠 소품" }],
+      searchQuery: "Chopin Minute Waltz Lang Lang"
+    },
+    {
+      id: "chopin-nocturne-posth-csharp",
+      title: "야상곡 20번 C#단조 유작",
+      titleEn: "Nocturne in C-sharp minor, B. 49",
+      composerId: "chopin",
+      composerName: "프레데리크 쇼팽",
+      opus: "B. 49",
+      year: "1830",
+      signatureRank: 8,
+      moods: ["dawn", "rainy", "comfort"],
+      albumArt: "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=800&q=80",
+      description: "영화 '피아니스트'의 테마곡. 폐허 속에서 울려 퍼지던 처절하도록 서정적인 위로의 선율.",
+      backgroundStory: "쇼팽이 누나 루드비카에게 피아노 협주곡 2번을 연습하기 전에 몸을 풀라며 선물한 곡입니다. 폴란스키 감독의 영화 '피아니스트' 오프닝과 엔딩을 장식했습니다.",
+      interpretation: "애절한 서주에 이어지는 테마는 가슴 깊은 곳의 상처를 어루만져 주는 신비로운 애수를 띱니다.",
+      movements: [{ no: "단일 곡", title: "Lento con gran espressione", tempo: "느리고 풍부한 표현으로", desc: "처연하고 고결한 밤의 노래" }],
+      searchQuery: "Chopin Nocturne in C sharp minor Seong-Jin Cho"
+    },
+
+    // ==========================================
+    // 🎼 베토벤 (Beethoven) - 악성(樂聖)
+    // ==========================================
     {
       id: "beethoven-moonlight",
       title: "피아노 소나타 14번 '월광' (Op.27 No.2)",
@@ -101,10 +331,10 @@ const CLASSIC_DATA = {
       opus: "Op. 27 No. 2",
       year: "1801",
       signatureRank: 1,
-      moods: ["dawn", "rainy", "focus"],
+      moods: ["dawn", "rainy", "focus", "comfort"],
       albumArt: "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=800&q=80",
       description: "베토벤 피아노 음악의 최고봉. 1악장의 가슴 시린 멜랑콜리와 3악장의 폭풍 같은 정열.",
-      backgroundStory: "귓병이 악화되어 절망에 빠졌던 시기, 14세 연하의 귀족 제자 줄리에타 귀차르디와의 가슴 아픈 실연 속에서 작곡되었습니다. 시인 렐슈타프가 '스위스 루체른 호수의 달빛 아래 흔들리는 조각배 같다'고 묘사한 데서 '월광'이라는 이름이 붙었습니다.",
+      backgroundStory: "귓병이 악화되어 절망에 빠졌던 시기, 14세 연하의 귀족 제자 줄리에타 귀차르디와의 가슴 아픈 실연 속에서 작곡되었습니다.",
       interpretation: "1악장의 느린 삼연음표는 호수의 잔물결과 슬픈 탄식을, 3악장은 억눌린 운명에 맞서는 베토벤의 격렬한 분노를 담고 있습니다.",
       movements: [
         { no: "1악장", title: "Adagio sostenuto", tempo: "느리고 차분하게", desc: "달빛이 비치는 잔잔한 호수와 슬픈 탄식" },
@@ -125,8 +355,8 @@ const CLASSIC_DATA = {
       moods: ["heroic"],
       albumArt: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=800&q=80",
       description: "‘빠바바밤-’ 온 인류가 아는 모티프. 가혹한 운명에 맞서 싸워 마침내 승리의 환희를 쟁취하는 드라마.",
-      backgroundStory: "'운명은 이처럼 문을 두드린다'는 말로 유명한 도입부. 나폴레옹 전쟁의 혼란과 청각 상실이라는 비극 속에서 불굴의 의지로 완성한 걸작입니다.",
-      interpretation: "어두운 C단조에서 시작해 4악장의 눈부신 C장조로 터져 나오는 '암흑에서 광명으로'의 영웅적 서사를 정립한 인류 음악의 유산입니다.",
+      backgroundStory: "'운명은 이처럼 문을 두드린다'는 말로 유명한 도입부. 청각 상실의 비극 속에서 불굴의 의지로 완성한 걸작입니다.",
+      interpretation: "어두운 C단조에서 시작해 4악장의 눈부신 C장조로 터져 나오는 '암흑에서 광명으로'의 영웅적 서사입니다.",
       movements: [
         { no: "1악장", title: "Allegro con brio", tempo: "빠르고 생기있게", desc: "운명의 동기 4음이 집요하게 발전하는 긴장감" },
         { no: "2악장", title: "Andante con moto", tempo: "느리지만 활기차게", desc: "마음을 어루만지는 따뜻한 비올라와 첼로의 변주곡" },
@@ -144,14 +374,12 @@ const CLASSIC_DATA = {
       opus: "WoO 59",
       year: "1810",
       signatureRank: 3,
-      moods: ["focus", "relax"],
+      moods: ["focus", "relax", "romantic"],
       albumArt: "https://images.unsplash.com/photo-1520523839898-507125cd53c1?auto=format&fit=crop&w=800&q=80",
       description: "세상에서 가장 친숙한 피아노 선율. 사랑스러우면서도 아련한 추억을 자아내는 로맨틱 소품.",
-      backgroundStory: "베토벤 사후에 발견된 자필 악보에 '4월 27일 테레제의 추억을 위하여'라고 적혀 있었으나, 글씨가 흐려 출판업자가 '엘리제'로 잘못 읽어 지금의 이름이 되었습니다. 실제 주인공은 베토벤이 청혼했던 테레제 말파티로 알려져 있습니다.",
-      interpretation: "단순하면서도 한 번 들으면 잊히지 않는 첫 멜로디와 중간부의 격정적인 전개가 절묘한 대비를 이룹니다.",
-      movements: [
-        { no: "단일 소품", title: "Poco moto", tempo: "약간 빠르게", desc: "아름다운 주제 선율과 회상에 잠기는 중간부" }
-      ],
+      backgroundStory: "사후에 발견된 자필 악보에 '테레제의 추억을 위하여'라고 적혀 있었으나 출판업자가 '엘리제'로 오독하여 굳어졌습니다.",
+      interpretation: "단순하면서도 잊히지 않는 첫 멜로디와 중간부의 격정적인 전개가 절묘한 대비를 이룹니다.",
+      movements: [{ no: "단일 소품", title: "Poco moto", tempo: "약간 빠르게", desc: "아름다운 주제 선율과 회상에 잠기는 중간부" }],
       searchQuery: "Beethoven Fur Elise Lang Lang"
     },
     {
@@ -163,14 +391,12 @@ const CLASSIC_DATA = {
       opus: "Op. 13",
       year: "1798",
       signatureRank: 4,
-      moods: ["relax", "dawn", "rainy"],
+      moods: ["relax", "dawn", "rainy", "comfort"],
       albumArt: "https://images.unsplash.com/photo-1518495973542-4542c06a5843?auto=format&fit=crop&w=800&q=80",
       description: "베토벤이 남긴 가장 따뜻하고 서정적인 아다지오. 팝송과 영화 OST로 수없이 오마주된 명선율.",
-      backgroundStory: "베토벤 자신이 직접 '대소나타 비창(Grande Sonate Pathétique)'이라는 부제를 붙인 유일한 소나타입니다. 젊은 날의 고뇌와 슬픔을 노래하듯 아름답게 승화시켰습니다.",
+      backgroundStory: "베토벤 자신이 직접 '대소나타 비창'이라는 부제를 붙인 유일한 소나타입니다. 젊은 날의 고뇌와 슬픔을 노래하듯 승화시켰습니다.",
       interpretation: "오른손이 노래하는 감미로운 멜로디는 깊은 슬픔을 위로하는 어머니의 손길 같은 평온함을 선사합니다.",
-      movements: [
-        { no: "2악장", title: "Adagio cantabile", tempo: "노래하듯 느리게", desc: "영혼을 치유하는 천상의 칸타빌레 선율" }
-      ],
+      movements: [{ no: "2악장", title: "Adagio cantabile", tempo: "노래하듯 느리게", desc: "영혼을 치유하는 천상의 칸타빌레 선율" }],
       searchQuery: "Beethoven Pathetique Sonata 2nd Movement Rubinstein"
     },
     {
@@ -185,97 +411,49 @@ const CLASSIC_DATA = {
       moods: ["heroic"],
       albumArt: "https://images.unsplash.com/photo-1465847899084-d164df4dedc6?auto=format&fit=crop&w=800&q=80",
       description: "교향곡 최초로 인간의 목소리를 도입한 인류 음악의 최고봉. 모든 인류의 형제애와 평화를 노래합니다.",
-      backgroundStory: "완전히 귀가 먹은 베토벤이 1824년 초연 무대에서 지휘를 마친 뒤, 관객의 우레와 같은 기립 박수를 듣지 못해 알토 독창자가 그의 몸을 돌려 관객을 보게 했다는 감동적인 일화가 전해집니다.",
-      interpretation: "실러의 시 '환희에 부침'에 곡을 붙인 인류 역사의 문화유산. 팀파니와 오케스트라, 대합창이 어우러져 폭발하는 카타르시스를 줍니다.",
-      movements: [
-        { no: "4악장", title: "Presto - Allegro assai", tempo: "장엄하고 빠르게", desc: "베이스 독창의 선언과 인류 대합창의 환희" }
-      ],
+      backgroundStory: "완전히 귀가 먹은 베토벤이 초연 무대에서 지휘를 마친 뒤, 관객의 우레와 같은 박수를 듣지 못해 알토 독창자가 그의 몸을 돌려 관객을 보게 했다는 감동적 일화가 있습니다.",
+      interpretation: "실러의 시 '환희에 부침'에 곡을 붙인 인류 문화유산. 대합창과 팀파니가 폭발하는 카타르시스를 줍니다.",
+      movements: [{ no: "4악장", title: "Presto - Allegro assai", tempo: "장엄하고 빠르게", desc: "인류 대합창의 환희" }],
       searchQuery: "Beethoven Symphony 9 Ode to Joy Karajan"
     },
-
-    // ----------------------------------------------------
-    // 쇼팽 대표 명곡
-    // ----------------------------------------------------
     {
-      id: "chopin-nocturne-9-2",
-      title: "야상곡(녹턴) 제2번 Eb장조 (Op.9 No.2)",
-      titleEn: "Nocturne in E-flat major, Op. 9 No. 2",
-      composerId: "chopin",
-      composerName: "프레데리크 쇼팽",
-      opus: "Op. 9 No. 2",
-      year: "1832",
-      signatureRank: 1,
-      moods: ["dawn", "relax", "focus"],
-      albumArt: "https://images.unsplash.com/photo-1518495973542-4542c06a5843?auto=format&fit=crop&w=800&q=80",
-      description: "세상에서 가장 유명한 피아노 야상곡. 달콤하고 부드럽게 밤의 정취를 노래하는 시적 선율.",
-      backgroundStory: "20대 초반 파리에 도착한 직후 작곡된 곡으로, 파리 살롱에서 쇼팽의 시적 연주에 매료된 귀족 부인 마리 플레옐에게 헌정되었습니다.",
-      interpretation: "왼손의 안정적인 왈츠 반주 위에 오른손이 벨칸토 오페라처럼 감미롭게 노래합니다. 반복될 때마다 장식음이 보석처럼 화려하게 변주됩니다.",
-      movements: [
-        { no: "단일 악장", title: "Andante", tempo: "느리게 걷듯이", desc: "밤의 서정과 화려한 카덴차로 마무리되는 명곡" }
-      ],
-      searchQuery: "Chopin Nocturne Op 9 No 2 Rubinstein"
+      id: "beethoven-emperor",
+      title: "피아노 협주곡 5번 Eb장조 '황제' 1악장",
+      titleEn: "Piano Concerto No. 5 'Emperor', I. Allegro",
+      composerId: "beethoven",
+      composerName: "루트비히 판 베토벤",
+      opus: "Op. 73",
+      year: "1809",
+      signatureRank: 6,
+      moods: ["heroic", "morning"],
+      albumArt: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80",
+      description: "오케스트라의 강력한 화음과 독주 피아노의 눈부신 아르페지오 카덴차가 빚어내는 황제의 당당한 위엄.",
+      backgroundStory: "나폴레옹 군대가 빈을 포위하고 포탄이 떨어지던 전쟁의 소용돌이 속에서 완성한 가장 당당한 협주곡입니다.",
+      interpretation: "협주곡 역사상 최초로 1악장 도입부부터 피아노가 오케스트라를 압도하며 찬란하게 등장합니다.",
+      movements: [{ no: "1악장", title: "Allegro", tempo: "당당하고 빠르게", desc: "황제의 위엄을 드러내는 찬란한 카덴차" }],
+      searchQuery: "Beethoven Emperor Concerto Zimerman Bernstein"
     },
     {
-      id: "chopin-raindrop",
-      title: "빗방울 전주곡 (Op.28 No.15)",
-      titleEn: "Prelude in D-flat major 'Raindrop'",
-      composerId: "chopin",
-      composerName: "프레데리크 쇼팽",
-      opus: "Op. 28 No. 15",
-      year: "1839",
-      signatureRank: 2,
-      moods: ["rainy", "dawn", "focus"],
-      albumArt: "https://images.unsplash.com/photo-1515694346937-94d85e41e6f0?auto=format&fit=crop&w=800&q=80",
-      description: "지속해서 똑똑 떨어지는 빗방울 소리. 요양지의 고독과 폭풍우의 공포를 담아낸 걸작.",
-      backgroundStory: "쇼팽이 연인 조르주 상드와 함께 스페인 마요르카 섬으로 요양을 떠났을 때, 끝없는 겨울비 속에서 홀로 지붕에서 떨어지는 빗방울 소리를 들으며 썼습니다.",
-      interpretation: "곡 전체를 관통하는 Ab(G#) 음의 지속적인 연타가 빗방울을 상징합니다. 중간부 C#단조에서는 어두운 천둥번개 같은 공포가 몰아칩니다.",
-      movements: [
-        { no: "단일 악장", title: "Sostenuto", tempo: "음 하나하나를 충실히", desc: "처마 끝 빗방울과 중간부의 격렬한 긴장감" }
-      ],
-      searchQuery: "Chopin Raindrop Prelude Seong-Jin Cho"
-    },
-    {
-      id: "chopin-fantaisie-impromptu",
-      title: "즉흥환상곡 C#단조 (Op.66)",
-      titleEn: "Fantaisie-Impromptu in C-sharp minor",
-      composerId: "chopin",
-      composerName: "프레데리크 쇼팽",
-      opus: "Op. 66",
-      year: "1834",
-      signatureRank: 3,
-      moods: ["heroic", "focus"],
-      albumArt: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=800&q=80",
-      description: "건반 위를 질주하는 마법 같은 16분음표와 감미로운 중간부 칸타빌레의 눈부신 조화.",
-      backgroundStory: "쇼팽 생전에는 출판되지 않고 서랍 속에 봉인되어 있었으나, 쇼팽 사후 유언 집행자 폰타나가 출판하여 오늘날 쇼팽의 가장 사랑받는 피아노곡이 되었습니다.",
-      interpretation: "오른손의 16분음표 4개와 왼손의 셋잇단음표 3개가 빚어내는 복합 리듬(Polyrhythm)의 신비로움이 압권입니다.",
-      movements: [
-        { no: "단일 악장", title: "Allegro agitato", tempo: "격렬하고 빠르게", desc: "빛의 속도로 질주하는 아르페지오와 감미로운 중간부" }
-      ],
-      searchQuery: "Chopin Fantaisie Impromptu Yundi Li"
-    },
-    {
-      id: "chopin-tristesse",
-      title: "에튀드 Op.10 No.3 '이별의 곡'",
-      titleEn: "Étude Op. 10 No. 3 'Tristesse'",
-      composerId: "chopin",
-      composerName: "프레데리크 쇼팽",
-      opus: "Op. 10 No. 3",
-      year: "1832",
-      signatureRank: 4,
-      moods: ["rainy", "relax", "dawn"],
-      albumArt: "https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=800&q=80",
-      description: "쇼팽 스스로 '내 평생 이렇게 아름다운 멜로디는 다시 쓰지 못했다'고 고백한 눈물의 선율.",
-      backgroundStory: "고국 폴란드의 혁명이 실패로 끝나 다시는 조국으로 돌아갈 수 없게 된 젊은 쇼팽이 흘린 망향의 눈물이 고스란히 담겨 있습니다.",
-      interpretation: "절제된 슬픔으로 시작해 중간부의 불꽃 같은 절규를 거쳐 다시 고요한 체념으로 돌아오는 완벽한 서정시입니다.",
-      movements: [
-        { no: "단일 곡", title: "Lento ma non troppo", tempo: "느리지만 너무 처지지 않게", desc: "가장 아름다운 망향의 송가" }
-      ],
-      searchQuery: "Chopin Etude Op 10 No 3 Pollini"
+      id: "beethoven-spring-sonata",
+      title: "바이올린 소나타 5번 F장조 '봄' 1악장",
+      titleEn: "Violin Sonata No. 5 'Spring', I. Allegro",
+      composerId: "beethoven",
+      composerName: "루트비히 판 베토벤",
+      opus: "Op. 24",
+      year: "1801",
+      signatureRank: 7,
+      moods: ["morning", "relax", "romantic"],
+      albumArt: "https://images.unsplash.com/photo-1465847899084-d164df4dedc6?auto=format&fit=crop&w=800&q=80",
+      description: "얼어붙은 대지를 녹이고 새싹이 돋아나듯 싱그럽고 따사로운 바이올린과 피아노의 이중주.",
+      backgroundStory: "어둡고 격정적인 베토벤의 작품들 중 가장 밝고 화사한 햇살을 품고 있어 '봄(Frühling)'이라는 별칭이 붙었습니다.",
+      interpretation: "바이올린이 노래하는 우아하고 싱그러운 테마가 듣는 이의 마음에 봄바람을 불어넣어 줍니다.",
+      movements: [{ no: "1악장", title: "Allegro", tempo: "기분 좋게 빠르게", desc: "새봄의 설렘을 노래하는 밝고 화사한 멜로디" }],
+      searchQuery: "Beethoven Spring Sonata Perlman Ashkenazy"
     },
 
-    // ----------------------------------------------------
-    // 모차르트 대표 명곡
-    // ----------------------------------------------------
+    // ==========================================
+    // 👑 모차르트 (Mozart) - 음악의 신동
+    // ==========================================
     {
       id: "mozart-eine-kleine",
       title: "아이네 클라이네 나흐트무지크 1악장 (K.525)",
@@ -285,14 +463,12 @@ const CLASSIC_DATA = {
       opus: "K. 525",
       year: "1787",
       signatureRank: 1,
-      moods: ["heroic", "focus"],
+      moods: ["morning", "heroic", "focus"],
       albumArt: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=800&q=80",
       description: "‘소야곡(작은 밤의 세레나데)’. 모차르트 특유의 밝고 경쾌한 천재성이 폭발하는 현악 앙상블.",
-      backgroundStory: "모차르트가 오페라 '돈 조반니'를 작곡하던 전성기 빈의 여름밤, 귀족 정원 파티의 야외 연주를 위해 쓴 세레나데 명곡입니다.",
+      backgroundStory: "오페라 '돈 조반니'를 작곡하던 전성기 빈의 여름밤, 귀족 정원 파티의 야외 연주를 위해 쓴 세레나데 명곡입니다.",
       interpretation: "도입부 현악기들의 힘찬 유니즌과 뒤이어지는 우아한 선율은 고전주의 균형미의 교과서입니다.",
-      movements: [
-        { no: "1악장", title: "Allegro", tempo: "빠르고 경쾌하게", desc: "누구나 아는 활기찬 현악 앙상블의 오프닝" }
-      ],
+      movements: [{ no: "1악장", title: "Allegro", tempo: "빠르고 경쾌하게", desc: "누구나 아는 활기찬 현악 앙상블" }],
       searchQuery: "Mozart Eine kleine Nachtmusik Karajan"
     },
     {
@@ -304,33 +480,29 @@ const CLASSIC_DATA = {
       opus: "K. 467",
       year: "1785",
       signatureRank: 2,
-      moods: ["relax", "dawn", "focus"],
+      moods: ["relax", "dawn", "focus", "sleep"],
       albumArt: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80",
       description: "영화 '엘비라 마디간'의 테마곡. 천상의 평화와 티 없는 순수함을 담은 안식의 선율.",
       backgroundStory: "모차르트가 빈에서 피아니스트로서 최고 전성기를 누리던 시절, 직접 예약 음악회에서 연주하기 위해 작곡했습니다.",
       interpretation: "약음기를 낀 현악기의 잔잔한 물결 위로 독주 피아노가 한 점 티 없는 맑은 목소리로 천상의 노래를 건넵니다.",
-      movements: [
-        { no: "2악장", title: "Andante", tempo: "느리게 걷듯이", desc: "영혼을 평온하게 어루만지는 천상의 안단테" }
-      ],
+      movements: [{ no: "2악장", title: "Andante", tempo: "느리게 걷듯이", desc: "영혼을 평온하게 어루만지는 천상의 안단테" }],
       searchQuery: "Mozart Piano Concerto 21 Andante Pollini"
     },
     {
       id: "mozart-turkish-march",
       title: "터키 행진곡 (피아노 소나타 11번 3악장, K.331)",
-      titleEn: "Turkish March (Piano Sonata No. 11, III. Rondo alla Turca)",
+      titleEn: "Turkish March (Piano Sonata No. 11, III. Rondo)",
       composerId: "mozart",
       composerName: "볼프강 아마데우스 모차르트",
       opus: "K. 331",
       year: "1783",
       signatureRank: 3,
-      moods: ["heroic", "focus"],
+      moods: ["morning", "focus", "heroic"],
       albumArt: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=800&q=80",
       description: "오스만 튀르크 군악대의 타악기 리듬을 모차르트만의 경쾌하고 재치 있는 피아노로 묘사한 걸작.",
-      backgroundStory: "18세기 오스트리아 빈에 불어닥친 '터키풍(Turquerie)' 유행에 영감을 받아 작곡된 이국적이고 재기발랄한 론도입니다.",
+      backgroundStory: "18세기 오스트리아 빈에 불어닥친 '터키풍' 유행에 영감을 받아 작곡된 이국적이고 재기발랄한 론도입니다.",
       interpretation: "발랄한 리듬과 스타카토 타건이 마치 발을 구르며 행진하는 군악대의 흥겨운 모습을 연상시킵니다.",
-      movements: [
-        { no: "3악장", title: "Allegretto", tempo: "조금 빠르게", desc: "경쾌한 터키풍 군악 리듬의 론도 피날레" }
-      ],
+      movements: [{ no: "3악장", title: "Allegretto", tempo: "조금 빠르게", desc: "경쾌한 터키풍 군악 리듬의 론도 피날레" }],
       searchQuery: "Mozart Turkish March Fazil Say"
     },
     {
@@ -342,20 +514,52 @@ const CLASSIC_DATA = {
       opus: "K. 626",
       year: "1791",
       signatureRank: 4,
-      moods: ["rainy", "dawn"],
+      moods: ["rainy", "dawn", "comfort"],
       albumArt: "https://images.unsplash.com/photo-1510915361894-db8b60106cb1?auto=format&fit=crop&w=800&q=80",
       description: "모차르트가 병상에서 마지막 8마디를 남기고 숨을 거둔, 인류 역사상 가장 슬프고 성스러운 진혼곡.",
-      backgroundStory: "정체불명의 검은 옷을 입은 사나이로부터 죽은 아내를 위한 진혼곡을 의뢰받았으나, 모차르트는 이것이 '자신의 죽음을 위한 노래'라 직감하며 쓰러졌습니다.",
+      backgroundStory: "정체불명의 검은 옷을 입은 사나이로부터 진혼곡을 의뢰받았으나, 모차르트는 이것이 '자신의 죽음을 위한 노래'라 직감하며 쓰러졌습니다.",
       interpretation: "흐느끼는 듯한 현악기의 탄식과 합창단의 애절한 기도가 심금을 울리는 숭고한 비극의 정점입니다.",
-      movements: [
-        { no: "라크리모사", title: "Larghetto", tempo: "느리고 장엄하게", desc: "눈물의 날, 모차르트 최후의 백조의 노래" }
-      ],
+      movements: [{ no: "라크리모사", title: "Larghetto", tempo: "느리고 장엄하게", desc: "눈물의 날, 모차르트 최후의 백조의 노래" }],
       searchQuery: "Mozart Requiem Lacrimosa Karl Bohm"
     },
+    {
+      id: "mozart-clarinet-concerto",
+      title: "클라리넷 협주곡 A장조 2악장 아다지오 (K.622)",
+      titleEn: "Clarinet Concerto in A major, II. Adagio",
+      composerId: "mozart",
+      composerName: "볼프강 아마데우스 모차르트",
+      opus: "K. 622",
+      year: "1791",
+      signatureRank: 5,
+      moods: ["comfort", "relax", "dawn", "sleep"],
+      albumArt: "https://images.unsplash.com/photo-1518495973542-4542c06a5843?auto=format&fit=crop&w=800&q=80",
+      description: "영화 '아웃 오브 아프리카'의 사바나 초원 위로 흐르던 아득하고 온화한 클라리넷의 독주.",
+      backgroundStory: "모차르트가 세상을 떠나기 불과 두 달 전 친구인 명인 안톤 슈타들러를 위해 쓴 최후의 완성된 협주곡입니다.",
+      interpretation: "클라리넷의 그윽하고 따뜻한 중저음 음색이 세상의 모든 번뇌를 잊게 만드는 깊은 평온을 줍니다.",
+      movements: [{ no: "2악장", title: "Adagio", tempo: "매우 느리고 온화하게", desc: "사바나의 석양 같은 아득한 클라리넷의 기도" }],
+      searchQuery: "Mozart Clarinet Concerto Adagio Martin Frost"
+    },
+    {
+      id: "mozart-queen-of-night",
+      title: "마술피리 중 '밤의 여왕 아리아' (K.620)",
+      titleEn: "The Magic Flute, Queen of the Night Aria",
+      composerId: "mozart",
+      composerName: "볼프강 아마데우스 모차르트",
+      opus: "K. 620",
+      year: "1791",
+      signatureRank: 6,
+      moods: ["heroic"],
+      albumArt: "https://images.unsplash.com/photo-1465847899084-d164df4dedc6?auto=format&fit=crop&w=800&q=80",
+      description: "소프라노의 하이 F음 초고음 스타카토가 칼날처럼 번뜩이는 오페라 역사상 최고의 분노의 아리아.",
+      backgroundStory: "밤의 여왕이 딸 파미나에게 칼을 쥐여주며 원수 자라스트로를 암살하라고 저주를 퍼붓는 극적인 장면입니다.",
+      interpretation: "인간의 성대가 낼 수 있는 극한의 음역대를 넘나드는 콜로라투라 소프라노의 초인적 테크닉이 전율을 일으킵니다.",
+      movements: [{ no: "아리아", title: "Allegro assai", tempo: "매우 빠르게", desc: "칼날 같은 고음 스타카토의 복수극" }],
+      searchQuery: "Mozart Queen of the Night Diana Damrau"
+    },
 
-    // ----------------------------------------------------
-    // 바흐 대표 명곡
-    // ----------------------------------------------------
+    // ==========================================
+    // 🎻 바흐 (Bach) - 서양 음악의 아버지
+    // ==========================================
     {
       id: "bach-air-on-g",
       title: "G선상의 아리아 (관현악 모음곡 3번)",
@@ -365,14 +569,12 @@ const CLASSIC_DATA = {
       opus: "BWV 1068",
       year: "1730",
       signatureRank: 1,
-      moods: ["relax", "focus", "rainy"],
+      moods: ["relax", "focus", "rainy", "comfort", "sleep"],
       albumArt: "https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=800&q=80",
       description: "바이올린의 가장 굵고 따뜻한 줄 하나(G선)만으로 연주되는, 영혼을 어루만지는 성스러운 기도.",
-      backgroundStory: "원래 관현악 모음곡 3번의 '에어(Air)'였으나, 빌헬미가 바이올린의 가장 낮은 줄인 G선 하나로 연주할 수 있도록 편곡하며 세계적 명곡이 되었습니다.",
+      backgroundStory: "원래 관현악 모음곡 3번의 '에어'였으나, 빌헬미가 바이올린 G선 하나로 연주할 수 있도록 편곡하며 세계적 명곡이 되었습니다.",
       interpretation: "흔들림 없는 베이스라인의 하강 선율 위에 바이올린의 유려한 노래가 얹히며 깊은 영적 평온을 선물합니다.",
-      movements: [
-        { no: "단일 곡", title: "Air", tempo: "느리고 서정적으로", desc: "하강하는 베이스라인 위에 펼쳐지는 천상의 노래" }
-      ],
+      movements: [{ no: "단일 곡", title: "Air", tempo: "느리고 서정적으로", desc: "하강하는 베이스라인 위에 펼쳐지는 천상의 노래" }],
       searchQuery: "Bach Air on the G String HAUSER"
     },
     {
@@ -384,14 +586,12 @@ const CLASSIC_DATA = {
       opus: "BWV 1007",
       year: "1720",
       signatureRank: 2,
-      moods: ["focus", "dawn", "rainy"],
+      moods: ["focus", "dawn", "rainy", "relax"],
       albumArt: "https://images.unsplash.com/photo-1510915361894-db8b60106cb1?auto=format&fit=crop&w=800&q=80",
       description: "단 하나의 첼로가 빚어내는 가장 순수하고 깊은 울림. 마음의 소음을 지우는 첼로의 성서.",
       backgroundStory: "200년간 연습용 악보로 잊혀 있다가 파블로 카잘스가 바르셀로나 고서점에서 발굴해 세상에 빛을 보게 한 기적의 작품입니다.",
       interpretation: "반주 없이 하나의 악기로 화성과 선율을 완벽히 구축하며, 호흡과 심박을 가장 차분하게 가라앉혀 줍니다.",
-      movements: [
-        { no: "1곡", title: "Prélude", tempo: "유려하게 흐르듯", desc: "자연의 파도처럼 물결치는 불멸의 첼로 오프닝" }
-      ],
+      movements: [{ no: "1곡", title: "Prélude", tempo: "유려하게 흐르듯", desc: "자연의 파도처럼 물결치는 불멸의 첼로 오프닝" }],
       searchQuery: "Bach Cello Suite No 1 Prelude Yo-Yo Ma"
     },
     {
@@ -406,18 +606,306 @@ const CLASSIC_DATA = {
       moods: ["heroic"],
       albumArt: "https://images.unsplash.com/photo-1507838153414-b4b713384a76?auto=format&fit=crop&w=800&q=80",
       description: "‘따다다단-’ 파이프 오르간이 뿜어내는 압도적인 웅장함과 드라마틱한 바로크 대위법의 정점.",
-      backgroundStory: "청년 바흐가 아른슈타트 교회 오르가니스트 시절 파이프 오르간의 모든 음색과 페달 기교를 시험하기 위해 쓴 혁명적 작품입니다.",
+      backgroundStory: "청년 바흐가 교회 오르가니스트 시절 파이프 오르간의 모든 음색과 페달 기교를 시험하기 위해 쓴 혁명적 작품입니다.",
       interpretation: "천둥처럼 포효하는 도입부 토카타와 뒤이어 한 치의 오차도 없이 맞물리는 정교한 4성부 푸가가 경이로움을 줍니다.",
       movements: [
-        { no: "전반부", title: "Toccata", tempo: "격정적으로", desc: "거대한 파이프 오르간의 번개 같은 오프닝" },
-        { no: "후반부", title: "Fugue", tempo: "정교하게", desc: "수학적 대위법이 엮어내는 장대한 클라이맥스" }
+        { no: "전반부", title: "Toccata", tempo: "격정적으로", desc: "파이프 오르간의 번개 같은 오프닝" },
+        { no: "후반부", title: "Fugue", tempo: "정교하게", desc: "장대한 대위법의 클라이맥스" }
       ],
       searchQuery: "Bach Toccata and Fugue in D minor BWV 565"
     },
+    {
+      id: "bach-goldberg-aria",
+      title: "골드베르크 변주곡 중 '아리아' (BWV 988)",
+      titleEn: "Goldberg Variations, BWV 988: Aria",
+      composerId: "bach",
+      composerName: "요한 제바스티안 바흐",
+      opus: "BWV 988",
+      year: "1741",
+      signatureRank: 4,
+      moods: ["sleep", "focus", "relax", "dawn"],
+      albumArt: "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=800&q=80",
+      description: "카이저링크 백작의 불면증을 달래기 위해 작곡된, 서양 음악사상 가장 완벽한 치유와 명상의 아리아.",
+      backgroundStory: "심한 불면증에 시달리던 백작이 밤마다 건반 연주자 골드베르크에게 연주하게 할 편안하고 조용한 곡을 바흐에게 청탁하여 탄생했습니다.",
+      interpretation: "사라방드 리듬 위에 느리고 담담하게 얹히는 우아한 선율은 심장 박동을 자연스럽게 늦춰주며 숙면을 돕습니다.",
+      movements: [{ no: "테마", title: "Aria", tempo: "조용하고 느리게", desc: "불면의 밤을 위로하는 고결한 자장가" }],
+      searchQuery: "Bach Goldberg Variations Aria Glenn Gould"
+    },
+    {
+      id: "bach-jesu-joy",
+      title: "예수, 인간 소망의 기쁨 (BWV 147)",
+      titleEn: "Jesu, Joy of Man's Desiring",
+      composerId: "bach",
+      composerName: "요한 제바스티안 바흐",
+      opus: "BWV 147",
+      year: "1723",
+      signatureRank: 5,
+      moods: ["morning", "relax", "comfort"],
+      albumArt: "https://images.unsplash.com/photo-1520523839898-507125cd53c1?auto=format&fit=crop&w=800&q=80",
+      description: "끊임없이 굽이치는 온화한 셋잇단음표의 물결. 마음에 성스러운 평안과 빛을 채우는 칸타타 명곡.",
+      backgroundStory: "바흐의 교회 칸타타 147번의 합창곡으로, 결혼식과 성탄절에 전 세계에서 가장 많이 울려 퍼지는 축복의 선율입니다.",
+      interpretation: "오보에와 바이올린이 수놓는 쉼 없는 잔잔한 흐름 속에 합창의 코랄 선율이 겹쳐지며 따사로운 영적 감동을 선사합니다.",
+      movements: [{ no: "코랄", title: "Cantata Mov. 10", tempo: "온화하게 걷듯이", desc: "축복과 기쁨을 전하는 영적 선율" }],
+      searchQuery: "Bach Jesu Joy of Man's Desiring Myra Hess"
+    },
 
-    // ----------------------------------------------------
-    // 드뷔시 대표 명곡
-    // ----------------------------------------------------
+    // ==========================================
+    // 🐟 슈베르트 (Schubert) - 가곡의 왕 (NEW!)
+    // ==========================================
+    {
+      id: "schubert-trout",
+      title: "피아노 5중주 '송어' 4악장 테마와 변주",
+      titleEn: "Piano Quintet in A major 'The Trout', IV. Andantino",
+      composerId: "schubert",
+      composerName: "프란츠 슈베르트",
+      opus: "D. 667",
+      year: "1819",
+      signatureRank: 1,
+      moods: ["morning", "relax", "focus"],
+      albumArt: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80",
+      description: "맑은 시냇물 속을 은빛 비늘을 반짝이며 헤엄치는 송어의 생동감 넘치는 몸짓.",
+      backgroundStory: "오스트리아 북부 슈타이어로 친구들과 휴가를 떠났을 때, 청정한 알프스 자연과 맑은 계곡물에 매료되어 자신의 가곡 '송어'를 주제로 쓴 실내악 걸작입니다.",
+      interpretation: "피아노의 높은 고음 타건이 맑은 물방울을 튀기듯 경쾌하게 변주되며 기분 좋은 활력을 선물합니다.",
+      movements: [{ no: "4악장", title: "Andantino - Allegretto", tempo: "경쾌하고 우아하게", desc: "시냇물 속 송어를 묘사한 변주곡" }],
+      searchQuery: "Schubert Trout Quintet 4th Movement Anne-Sophie Mutter"
+    },
+    {
+      id: "schubert-erlkonig",
+      title: "가곡 '마왕' (Erlkönig, D.328)",
+      titleEn: "Erlkönig, D. 328",
+      composerId: "schubert",
+      composerName: "프란츠 슈베르트",
+      opus: "D. 328",
+      year: "1815",
+      signatureRank: 2,
+      moods: ["heroic"],
+      albumArt: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=800&q=80",
+      description: "어두운 밤 폭풍우를 뚫고 달리는 말발굽 소리. 괴테의 시에 곡을 붙인 소름 돋는 드라마틱 예술가곡.",
+      backgroundStory: "슈베르트가 불과 18세 때 괴테의 시에 감명을 받아 단 몇 시간 만에 피아노 앞에 앉아 완성한 천재적 작품입니다.",
+      interpretation: "성악가 1명이 해설자, 다급한 아버지, 공포에 질린 아들, 달콤하게 유혹하는 마왕의 4가지 역할을 각기 다른 음색으로 연기합니다.",
+      movements: [{ no: "단일 곡", title: "Schnell", tempo: "매우 빠르게", desc: "광란의 말발굽 연타와 4인의 대화" }],
+      searchQuery: "Schubert Erlkonig Dietrich Fischer-Dieskau"
+    },
+    {
+      id: "schubert-ave-maria",
+      title: "아베 마리아 (엘렌의 세 번째 노래, D.839)",
+      titleEn: "Ave Maria (Ellens Gesang III, D. 839)",
+      composerId: "schubert",
+      composerName: "프란츠 슈베르트",
+      opus: "D. 839",
+      year: "1825",
+      signatureRank: 3,
+      moods: ["comfort", "dawn", "sleep", "relax"],
+      albumArt: "https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=800&q=80",
+      description: "세상에서 가장 거룩하고 순결한 성모를 향한 기도. 상처 입은 마음을 보듬는 지고의 위로.",
+      backgroundStory: "월터 스콧의 서사시 '호수의 여인' 중 주인공 엘렌이 성모상 앞에서 부르는 순결한 기도의 노래에서 유래했습니다.",
+      interpretation: "하프를 모방한 피아노 아르페지오 위에 티 없이 맑은 기도의 선율이 얹히며 눈물겨운 종교적 카타르시스를 줍니다.",
+      movements: [{ no: "단일 가곡", title: "Sehr langsam", tempo: "매우 느리게", desc: "영혼을 맑게 씻어주는 기도의 노래" }],
+      searchQuery: "Schubert Ave Maria Hauser Cello"
+    },
+    {
+      id: "schubert-serenade",
+      title: "백조의 노래 중 제4곡 '세레나데' (D.957)",
+      titleEn: "Schwanengesang, D. 957: Ständchen (Serenade)",
+      composerId: "schubert",
+      composerName: "프란츠 슈베르트",
+      opus: "D. 957",
+      year: "1828",
+      signatureRank: 4,
+      moods: ["romantic", "dawn", "rainy"],
+      albumArt: "https://images.unsplash.com/photo-1518495973542-4542c06a5843?auto=format&fit=crop&w=800&q=80",
+      description: "‘달콤한 밤의 고요 속에 내 노래 소리 울려 퍼지네...’ 사랑하는 연인의 창가에서 부르는 애절한 밤의 연가.",
+      backgroundStory: "슈베르트가 세상을 떠난 마지막 해에 작곡된 유작 가곡집 '백조의 노래'에 실린 가장 유명한 세레나데입니다.",
+      interpretation: "기타 소리를 모방한 단조의 반주 위에 아련한 고백의 멜로디가 애수 어린 낭만을 자아냅니다.",
+      movements: [{ no: "단일 가곡", title: "Mässig", tempo: "보통 빠르기로", desc: "밤의 적막 속에 울려 퍼지는 사랑의 고백" }],
+      searchQuery: "Schubert Standchen Serenade Liszt Piano"
+    },
+    {
+      id: "schubert-unfinished",
+      title: "교향곡 제8번 B단조 '미완성' 1악장",
+      titleEn: "Symphony No. 8 'Unfinished', I. Allegro moderato",
+      composerId: "schubert",
+      composerName: "프란츠 슈베르트",
+      opus: "D. 759",
+      year: "1822",
+      signatureRank: 5,
+      moods: ["rainy", "dawn", "comfort"],
+      albumArt: "https://images.unsplash.com/photo-1510915361894-db8b60106cb1?auto=format&fit=crop&w=800&q=80",
+      description: "2개 악장만으로 온전한 완벽함을 이룬 신비의 걸작. 저음현의 불길한 속삭임과 가슴 시린 오보에의 슬픔.",
+      backgroundStory: "왜 3, 4악장을 완성하지 않았는지는 음악사 최대의 미스터리이나, 브람스는 '이 2개의 악장만으로 이미 완전무결하다'고 찬탄했습니다.",
+      interpretation: "깊은 심연에서 솟아나는 저음 첼로의 테마에 이어 오보에와 클라리넷이 엮어내는 서정성은 낭만 교향곡의 금자탑입니다.",
+      movements: [{ no: "1악장", title: "Allegro moderato", tempo: "알맞게 빠르게", desc: "신비로운 저음현과 애절한 목관의 멜로디" }],
+      searchQuery: "Schubert Unfinished Symphony Carlos Kleiber"
+    },
+
+    // ==========================================
+    // ☀️ 비발디 (Vivaldi) - 바로크의 태양 (NEW!)
+    // ==========================================
+    {
+      id: "vivaldi-spring",
+      title: "사계 협주곡 제1번 E장조 '봄' 1악장",
+      titleEn: "The Four Seasons: Spring, I. Allegro",
+      composerId: "vivaldi",
+      composerName: "안토니오 비발디",
+      opus: "Op. 8 No. 1",
+      year: "1723",
+      signatureRank: 1,
+      moods: ["morning", "relax", "heroic"],
+      albumArt: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80",
+      description: "새들의 지저귐, 졸졸 흐르는 시냇물, 산들바람. 봄의 축복을 온몸으로 노래하는 불후의 명작.",
+      backgroundStory: "비발디가 직접 쓴 소네트(시)를 음악으로 묘사한 표제음악의 시초로, 새소리와 천둥 번개를 바이올린 기교로 완벽히 묘사했습니다.",
+      interpretation: "솔로 바이올린 3대가 새들의 지저귐을 주고받는 트리오 파트는 바로크 음악 최고의 화사함을 선사합니다.",
+      movements: [{ no: "1악장", title: "Allegro", tempo: "경쾌하게", desc: "봄의 도래를 알리는 찬란한 합주" }],
+      searchQuery: "Vivaldi Four Seasons Spring Mutter Karajan"
+    },
+    {
+      id: "vivaldi-summer-storm",
+      title: "사계 협주곡 제2번 G단조 '여름' 3악장 '폭풍'",
+      titleEn: "The Four Seasons: Summer, III. Presto (Storm)",
+      composerId: "vivaldi",
+      composerName: "안토니오 비발디",
+      opus: "Op. 8 No. 2",
+      year: "1723",
+      signatureRank: 2,
+      moods: ["heroic"],
+      albumArt: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=800&q=80",
+      description: "한여름 하늘이 어두워지며 우박과 천둥번개가 대지를 강타하는 숨 막히는 바이올린의 질주.",
+      backgroundStory: "타는 듯한 여름 더위 끝에 갑작스레 들이닥쳐 밀밭을 꺾어놓는 지중해의 무서운 우박 폭풍우를 생생하게 그렸습니다.",
+      interpretation: "현악기들의 맹렬한 하강 트레몰로와 독주 바이올린의 광기 어린 속주는 현대 헤비메탈을 능가하는 카타르시스를 선사합니다.",
+      movements: [{ no: "3악장", title: "Presto", tempo: "매우 빠르게", desc: "천둥번개와 폭풍우의 격렬한 질주" }],
+      searchQuery: "Vivaldi Summer Storm Julia Fischer"
+    },
+    {
+      id: "vivaldi-winter-largo",
+      title: "사계 협주곡 제4번 F단조 '겨울' 2악장 라르고",
+      titleEn: "The Four Seasons: Winter, II. Largo",
+      composerId: "vivaldi",
+      composerName: "안토니오 비발디",
+      opus: "Op. 8 No. 4",
+      year: "1723",
+      signatureRank: 3,
+      moods: ["relax", "comfort", "rainy", "sleep"],
+      albumArt: "https://images.unsplash.com/photo-1518495973542-4542c06a5843?auto=format&fit=crop&w=800&q=80",
+      description: "창밖엔 차가운 진눈깨비가 내리고, 따뜻한 벽난로 곁에서 평화롭게 휴식을 취하는 아늑한 겨울날.",
+      backgroundStory: "소네트의 '창가에 조용히 앉아 벽난로의 온기를 즐기는 동안 밖에는 비가 대지를 적신다'는 구절을 음악화했습니다.",
+      interpretation: "피치카토(줄을 손가락으로 뜯는 주법)로 떨어지는 빗방울을 표현하고, 바이올린이 따뜻한 안식의 노래를 부릅니다.",
+      movements: [{ no: "2악장", title: "Largo", tempo: "느리고 우아하게", desc: "벽난로 곁의 따뜻한 평화" }],
+      searchQuery: "Vivaldi Winter Largo Itzhak Perlman"
+    },
+
+    // ==========================================
+    // 🍂 브람스 (Brahms) - 깊은 고독과 가을의 서정 (NEW!)
+    // ==========================================
+    {
+      id: "brahms-hungarian-dance-5",
+      title: "헝가리 무곡 제5번 F#단조",
+      titleEn: "Hungarian Dance No. 5 in F-sharp minor",
+      composerId: "brahms",
+      composerName: "요한 제바스티안 브람스",
+      opus: "WoO 1 No. 5",
+      year: "1869",
+      signatureRank: 1,
+      moods: ["heroic", "morning"],
+      albumArt: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=800&q=80",
+      description: "집시 바이올린의 불꽃 같은 정열과 템포 루바토의 마법. 온 세상이 어깨를 들썩이는 클래식 댄스.",
+      backgroundStory: "젊은 시절 헝가리 바이올리니스트 레메니와 연주 여행을 다니며 집시들의 야성적인 멜로디에 반해 피아노 연탄곡으로 엮어 세계적 히트를 쳤습니다.",
+      interpretation: "느려졌다가 번개처럼 빨라지는 차르다시(Csárdás) 댄스 특유의 템포 변화가 짜릿한 흥을 돋웁니다.",
+      movements: [{ no: "단일 곡", title: "Allegro", tempo: "빠르고 생기있게", desc: "집시 음악의 불꽃 튀는 리듬과 템포" }],
+      searchQuery: "Brahms Hungarian Dance No 5 Abbado"
+    },
+    {
+      id: "brahms-lullaby",
+      title: "브람스의 자장가 (자장가 Op.49 No.4)",
+      titleEn: "Wiegenlied (Lullaby), Op. 49 No. 4",
+      composerId: "brahms",
+      composerName: "요한 제바스티안 브람스",
+      opus: "Op. 49 No. 4",
+      year: "1868",
+      signatureRank: 2,
+      moods: ["sleep", "comfort", "relax"],
+      albumArt: "https://images.unsplash.com/photo-1518495973542-4542c06a5843?auto=format&fit=crop&w=800&q=80",
+      description: "‘잘 자라 우리 아가...’ 온 인류의 잠자리를 보듬어 온 가장 따스하고 성스러운 자장가.",
+      backgroundStory: "브람스가 젊은 시절 사랑했던 여성 베르타 파버가 둘째 아이를 낳았다는 소식을 듣고 축하 선물로 작곡해 보낸 애정 어린 선물입니다.",
+      interpretation: "어머니의 심장 박동처럼 규칙적인 반주 위에 흐르는 따사로운 선율은 모든 불안을 잠재워 줍니다.",
+      movements: [{ no: "단일 가곡", title: "Zart bewegt", tempo: "부드럽고 온화하게", desc: "영혼을 잠재우는 천상의 자장가" }],
+      searchQuery: "Brahms Lullaby Yo-Yo Ma Kathryn Stott"
+    },
+    {
+      id: "brahms-intermezzo-118-2",
+      title: "간주곡 A장조 (인터메조 Op.118 No.2)",
+      titleEn: "Intermezzo in A major, Op. 118 No. 2",
+      composerId: "brahms",
+      composerName: "요한 제바스티안 브람스",
+      opus: "Op. 118 No. 2",
+      year: "1893",
+      signatureRank: 3,
+      moods: ["dawn", "rainy", "comfort", "relax"],
+      albumArt: "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=800&q=80",
+      description: "인생의 황혼기에 클라라 슈만을 향해 보낸 만추(晩秋)의 러브레터. 깊은 사색과 온화한 고독.",
+      backgroundStory: "생애 말년 지병을 앓으며 평생 사랑했던 클라라에게 바친 소품집으로, 클라라는 '이 곡이야말로 내 영혼의 안식처'라고 편지에 썼습니다.",
+      interpretation: "화려한 기교 대신 노년의 브람스가 건네는 담담하고 깊은 인생의 독백이 눈물겹도록 아름답습니다.",
+      movements: [{ no: "제2번", title: "Andante teneramente", tempo: "다정하고 부드럽게", desc: "황혼의 고독과 따스한 회상" }],
+      searchQuery: "Brahms Intermezzo Op 118 No 2 Radu Lupu"
+    },
+
+    // ==========================================
+    // 🎹 라흐마니노프 (Rachmaninoff) - 낭만주의 최후의 거인 (NEW!)
+    // ==========================================
+    {
+      id: "rachmaninoff-pc-2-mov-1",
+      title: "피아노 협주곡 2번 C단조 1악장 (Op.18)",
+      titleEn: "Piano Concerto No. 2 in C minor, I. Moderato",
+      composerId: "rachmaninoff",
+      composerName: "세르게이 라흐마니노프",
+      opus: "Op. 18",
+      year: "1901",
+      signatureRank: 1,
+      moods: ["heroic", "comfort", "rainy"],
+      albumArt: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=800&q=80",
+      description: "크렘린의 거대한 종소리를 닮은 묵직한 피아노 타건. 우울증을 딛고 일어선 불멸의 승리.",
+      backgroundStory: "교향곡 1번의 참패로 3년간 펜을 놓았던 라흐마니노프가 니콜라이 달 박사의 최면 치료 끝에 기적처럼 부활하며 완성한 걸작입니다.",
+      interpretation: "피아노 솔로가 피아니시모에서 포르티시모까지 종소리처럼 점점 커지며 오케스트라의 웅장한 테마를 터뜨리는 도입부는 전율 그 자체입니다.",
+      movements: [{ no: "1악장", title: "Moderato", tempo: "보통 빠르기로", desc: "종소리 오프닝과 가슴을 뒤흔드는 러시아의 우수" }],
+      searchQuery: "Rachmaninoff Piano Concerto No 2 Richter"
+    },
+    {
+      id: "rachmaninoff-rhapsody-paganini-18",
+      title: "파가니니 주제에 의한 광시곡 제18변주",
+      titleEn: "Rhapsody on a Theme of Paganini, Var. 18",
+      composerId: "rachmaninoff",
+      composerName: "세르게이 라흐마니노프",
+      opus: "Op. 43",
+      year: "1934",
+      signatureRank: 2,
+      moods: ["romantic", "comfort", "dawn", "relax"],
+      albumArt: "https://images.unsplash.com/photo-1518495973542-4542c06a5843?auto=format&fit=crop&w=800&q=80",
+      description: "영화 '사랑의 은하수' 테마곡. 파가니니의 악마적 주제를 완벽히 뒤집어 탄생시킨 천상의 멜로디.",
+      backgroundStory: "라흐마니노프 스스로 '이 변주는 내 에이전트(흥행사)를 위해 썼다'고 농담했을 정도로, 듣는 순간 사랑에 빠지는 마법 같은 선율입니다.",
+      interpretation: "악마적인 파가니니의 카프리스 24번 테마를 거꾸로 뒤집어(전도 변주) 완전히 새로운 로맨틱한 찬가로 재창조했습니다.",
+      movements: [{ no: "18변주", title: "Andante cantabile", tempo: "노래하듯 느리게", desc: "가슴 벅차오르는 사랑의 절정" }],
+      searchQuery: "Rachmaninoff Paganini Rhapsody Variation 18 Trifonov"
+    },
+    {
+      id: "rachmaninoff-vocalise",
+      title: "보칼리제 (Vocalise, Op.34 No.14)",
+      titleEn: "Vocalise, Op. 34 No. 14",
+      composerId: "rachmaninoff",
+      composerName: "세르게이 라흐마니노프",
+      opus: "Op. 34 No. 14",
+      year: "1915",
+      signatureRank: 3,
+      moods: ["comfort", "rainy", "dawn", "sleep"],
+      albumArt: "https://images.unsplash.com/photo-1510915361894-db8b60106cb1?auto=format&fit=crop&w=800&q=80",
+      description: "가사 없이 오직 모음(A, U) 하나만으로 부르는 눈물겨운 애가. 첼로 독주로 전 세계인의 사랑을 받는 명곡.",
+      backgroundStory: "러시아 소프라노 안토니나 네즈다노바에게 헌정된 곡으로, '단어가 없을 때 슬픔은 비로소 무한해진다'는 말을 증명합니다.",
+      interpretation: "러시아 광야의 끝없는 지평선을 바라보는 듯 아득하고 깊은 우수가 폐부를 찌릅니다.",
+      movements: [{ no: "단일 곡", title: "Lento la ma non troppo", tempo: "느리고 서정적으로", desc: "말 없는 탄식과 애가" }],
+      searchQuery: "Rachmaninoff Vocalise Sheku Kanneh-Mason"
+    },
+
+    // ==========================================
+    // 🌊 드뷔시 (Debussy) - 프랑스 인상주의의 빛
+    // ==========================================
     {
       id: "debussy-clair-de-lune",
       title: "베르가마스크 모음곡 3곡 '달빛'",
@@ -427,14 +915,12 @@ const CLASSIC_DATA = {
       opus: "L. 75",
       year: "1890",
       signatureRank: 1,
-      moods: ["dawn", "relax", "rainy"],
+      moods: ["dawn", "relax", "rainy", "sleep", "romantic"],
       albumArt: "https://images.unsplash.com/photo-1532767153582-b1a0e5145009?auto=format&fit=crop&w=800&q=80",
       description: "밤하늘 은빛 달빛의 흔들림. 프랑스 인상주의 피아노 음악의 가장 신비롭고 서정적인 정수.",
       backgroundStory: "프랑스 시인 폴 베를렌의 시 '달빛'에서 영감을 받아 빛과 그림자, 밤의 서늘한 공기를 음악적 색채로 포착했습니다.",
       interpretation: "박자감을 잊게 만드는 유려한 9/8박자 아르페지오와 건반의 잔향이 마음을 씻어내립니다.",
-      movements: [
-        { no: "제3곡", title: "Clair de lune", tempo: "매우 고요하게 표현을 담아", desc: "달빛이 은빛 호수 위로 유영하는 서정적 몽상" }
-      ],
+      movements: [{ no: "제3곡", title: "Clair de lune", tempo: "매우 고요하게 표현을 담아", desc: "달빛이 은빛 호수 위로 유영하는 서정적 몽상" }],
       searchQuery: "Debussy Clair de lune Seong-Jin Cho"
     },
     {
@@ -446,20 +932,18 @@ const CLASSIC_DATA = {
       opus: "L. 66",
       year: "1888",
       signatureRank: 2,
-      moods: ["focus", "relax"],
+      moods: ["focus", "relax", "morning"],
       albumArt: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80",
       description: "바람에 흔들리는 나뭇잎과 반짝이는 시냇물처럼 유려하게 흘러가는 피아노의 물결.",
       backgroundStory: "이슬람 건축의 아라베스크 덩굴무늬 장식에서 영감을 얻어, 선율의 곡선미가 끝없이 유기적으로 얽히도록 작곡했습니다.",
       interpretation: "셋잇단음표와 8분음표의 교차가 빚어내는 부드러운 물결이 마음에 싱그러운 여유를 선사합니다.",
-      movements: [
-        { no: "제1번", title: "Andantino con moto", tempo: "생기있게 걷듯이", desc: "유려한 아라베스크 곡선 선율의 향연" }
-      ],
+      movements: [{ no: "제1번", title: "Andantino con moto", tempo: "생기있게 걷듯이", desc: "유려한 아라베스크 곡선 선율의 향연" }],
       searchQuery: "Debussy Arabesque No 1 Ciccolini"
     },
 
-    // ----------------------------------------------------
-    // 차이콥스키 대표 명곡
-    // ----------------------------------------------------
+    // ==========================================
+    // 🦢 차이콥스키 (Tchaikovsky) - 러시아 낭만의 선율
+    // ==========================================
     {
       id: "tchaikovsky-swan-lake",
       title: "백조의 호수 모음곡 중 '정경(Scene)'",
@@ -469,14 +953,12 @@ const CLASSIC_DATA = {
       opus: "Op. 20a",
       year: "1876",
       signatureRank: 1,
-      moods: ["rainy", "heroic"],
+      moods: ["rainy", "heroic", "comfort"],
       albumArt: "https://images.unsplash.com/photo-1498036882173-b41c28a8ba34?auto=format&fit=crop&w=800&q=80",
       description: "오보에의 애수 어린 독주로 시작하여 웅장한 오케스트라로 번지는 백조의 슬픈 전설.",
       backgroundStory: "마법사의 저주로 백조로 변한 오데트 공주의 사랑 이야기. 오케스트라의 장대한 사운드로 발레 음악을 순수 교향악의 경지로 끌어올렸습니다.",
       interpretation: "하프의 아르페지오가 호수를 그리면 오보에가 눈물 같은 백조의 테마를 노래합니다.",
-      movements: [
-        { no: "정경", title: "Moderato", tempo: "보통 빠르기로", desc: "오보에의 애절한 솔로와 백조의 날갯짓" }
-      ],
+      movements: [{ no: "정경", title: "Moderato", tempo: "보통 빠르기로", desc: "오보에의 애절한 솔로와 백조의 날갯짓" }],
       searchQuery: "Tchaikovsky Swan Lake Scene Valery Gergiev"
     },
     {
@@ -488,39 +970,138 @@ const CLASSIC_DATA = {
       opus: "Op. 71a",
       year: "1892",
       signatureRank: 2,
-      moods: ["heroic", "relax"],
+      moods: ["heroic", "relax", "morning"],
       albumArt: "https://images.unsplash.com/photo-1518495973542-4542c06a5843?auto=format&fit=crop&w=800&q=80",
       description: "화려한 하프 카덴차와 호른의 낭만적인 왈츠가 펼치는 동화 속 화려한 무도회.",
       backgroundStory: "크리스마스이브의 마법 같은 모험을 그린 발레곡으로, 눈 덮인 겨울날 마음을 따뜻하게 녹여주는 축제의 선율입니다.",
       interpretation: "눈부신 하프 솔로 오프닝에 이어 호른 4중주가 부드럽게 주선율을 열며 우아한 회전 왈츠로 이어집니다.",
-      movements: [
-        { no: "꽃의 왈츠", title: "Tempo di Valse", tempo: "우아한 왈츠 템포로", desc: "하프의 독주와 호른 앙상블이 이끄는 화려한 왈츠" }
-      ],
+      movements: [{ no: "꽃의 왈츠", title: "Tempo di Valse", tempo: "우아한 왈츠 템포로", desc: "하프 독주와 호른 앙상블의 화려한 왈츠" }],
       searchQuery: "Tchaikovsky Waltz of the Flowers Gergiev"
+    },
+    {
+      id: "tchaikovsky-pc-1-mov-1",
+      title: "피아노 협주곡 1번 Bb단조 1악장 오프닝",
+      titleEn: "Piano Concerto No. 1 in B-flat minor, I. Allegro non troppo",
+      composerId: "tchaikovsky",
+      composerName: "표트르 차이콥스키",
+      opus: "Op. 23",
+      year: "1875",
+      signatureRank: 3,
+      moods: ["heroic"],
+      albumArt: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=800&q=80",
+      description: "호른의 찬란한 팡파르와 피아노의 거대한 옥타브 화음이 포효하는 클래식 협주곡의 제왕.",
+      backgroundStory: "스승 니콜라이 루빈스타인이 '연주 불가능할 정도로 엉망'이라 혹평했으나, 차이콥스키는 단 한 음도 고치지 않고 출판해 전 세계적인 대성공을 거두었습니다.",
+      interpretation: "광활한 러시아 대지를 가로지르는 듯한 호방하고 가슴 벅찬 테마가 압도적 스케일을 자랑합니다.",
+      movements: [{ no: "1악장 도입부", title: "Allegro non troppo", tempo: "당당하고 장엄하게", desc: "거대한 팡파르와 폭풍 피아노 화음" }],
+      searchQuery: "Tchaikovsky Piano Concerto No 1 Martha Argerich"
+    },
+
+    // ==========================================
+    // 🔔 리스트 (Liszt) - 피아노의 파가니니 (NEW!)
+    // ==========================================
+    {
+      id: "liszt-liebestraum-3",
+      title: "사랑의 꿈 제3번 Ab장조 '오 사랑하라'",
+      titleEn: "Liebestraum No. 3 in A-flat major",
+      composerId: "liszt",
+      composerName: "프란츠 리스트",
+      opus: "S. 541 No. 3",
+      year: "1850",
+      signatureRank: 1,
+      moods: ["romantic", "relax", "dawn", "comfort"],
+      albumArt: "https://images.unsplash.com/photo-1518495973542-4542c06a5843?auto=format&fit=crop&w=800&q=80",
+      description: "‘오 사랑하라, 그대가 사랑할 수 있는 한...’ 세상에서 가장 달콤하고 로맨틱한 피아노 고백.",
+      backgroundStory: "독일 시인 페르디난트 프라이릴리그라트의 시 '사랑할 수 있는 한 사랑하라'에 곡을 붙인 가곡을 피아노 독주곡으로 편곡한 불후의 명곡입니다.",
+      interpretation: "양손 엄지손가락으로 노래하는 따뜻한 주선율 위로 은방울이 구르듯 펼쳐지는 아르페지오 카덴차가 환상적입니다.",
+      movements: [{ no: "제3곡", title: "Poco allegro, con affetto", tempo: "약간 빠르게, 애정을 담아", desc: "영원한 사랑을 맹세하는 감미로운 노래" }],
+      searchQuery: "Liszt Liebestraum No 3 Yundi Li"
+    },
+    {
+      id: "liszt-la-campanella",
+      title: "파가니니 대연습곡 제3번 '라 캄파넬라'",
+      titleEn: "Grandes études de Paganini, S. 141: No. 3 'La Campanella'",
+      composerId: "liszt",
+      composerName: "프란츠 리스트",
+      opus: "S. 141 No. 3",
+      year: "1851",
+      signatureRank: 2,
+      moods: ["heroic", "focus"],
+      albumArt: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=800&q=80",
+      description: "‘작은 종(La Campanella)’. 높은 건반 위에서 맑게 울려 퍼지는 종소리를 신들린 기교로 묘사한 피아노의 기적.",
+      backgroundStory: "바이올린의 악마 파가니니의 파리 연주를 듣고 충격을 받은 청년 리스트가 '나는 피아노의 파가니니가 되겠다'고 결심하며 파가니니 협주곡의 론도를 피아노로 재창조했습니다.",
+      interpretation: "오른손이 두 옥타브를 널뛰기하며 끊임없이 은종 소리를 울려대는 초인적인 피아노 테크닉의 극치입니다.",
+      movements: [{ no: "제3번", title: "Allegretto", tempo: "경쾌하게", desc: "눈부신 은종 소리의 화려한 도약" }],
+      searchQuery: "Liszt La Campanella Yunchan Lim"
+    },
+
+    // ==========================================
+    // 🌲 그리그 (Grieg) - 북구의 쇼팽 (NEW!)
+    // ==========================================
+    {
+      id: "grieg-morning-mood",
+      title: "페르 귄트 모음곡 중 '아침의 기분'",
+      titleEn: "Peer Gynt Suite No. 1, Op. 46: Morning Mood",
+      composerId: "grieg",
+      composerName: "에드바르 그리그",
+      opus: "Op. 46 No. 1",
+      year: "1875",
+      signatureRank: 1,
+      moods: ["morning", "relax"],
+      albumArt: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80",
+      description: "노르웨이 피오르의 아침 안개를 뚫고 찬란한 태양이 떠오르는 경이로운 자연의 찬가.",
+      backgroundStory: "입센의 희곡 '페르 귄트'를 위해 작곡한 극음악으로, 모로코 사막의 아침 해돋이를 묘사했으나 노르웨이 숲의 상쾌함을 완벽히 담아냈습니다.",
+      interpretation: "플루트의 맑은 솔로로 시작하여 오보에와 현악기로 점차 번져나가며 태양빛이 온 세상을 비추는 장관을 연출합니다.",
+      movements: [{ no: "제1곡", title: "Allegretto pastorale", tempo: "목가적으로 조금 빠르게", desc: "새벽빛을 깨우는 상쾌한 아침의 찬가" }],
+      searchQuery: "Grieg Morning Mood Karajan"
+    },
+    {
+      id: "grieg-solveigs-song",
+      title: "페르 귄트 모음곡 중 '솔베이지의 노래'",
+      titleEn: "Peer Gynt Suite No. 2, Op. 55: Solveig's Song",
+      composerId: "grieg",
+      composerName: "에드바르 그리그",
+      opus: "Op. 55 No. 4",
+      year: "1875",
+      signatureRank: 2,
+      moods: ["rainy", "comfort", "dawn"],
+      albumArt: "https://images.unsplash.com/photo-1510915361894-db8b60106cb1?auto=format&fit=crop&w=800&q=80",
+      description: "‘겨울이 가고 봄이 돌아와도...’ 평생 방랑을 떠난 연인을 산속 오두막에서 기다리는 백발 여인의 애절한 순애보.",
+      backgroundStory: "방탕한 방랑자 페르 귄트가 늙고 지쳐 돌아올 때까지 변함없이 그를 기다리며 눈물로 부르는 순결한 사랑의 노래입니다.",
+      interpretation: "북유럽 특유의 서늘하고 애수 어린 단조의 멜로디가 가슴 저미는 감동을 전합니다.",
+      movements: [{ no: "제4곡", title: "Andante", tempo: "느리고 서정적으로", desc: "백발이 된 솔베이지의 변함없는 순애보" }],
+      searchQuery: "Grieg Solveig's Song Hauser Cello"
     }
   ],
 
+  // 추천 에디터 테마 플레이리스트
   curatedPlaylists: [
     {
       id: "pl-study",
       title: "몰입과 작업을 위한 집중 선율",
       subtitle: "잡념을 지우고 뇌를 맑게 깨우는 지적인 클래식",
       cover: "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?auto=format&fit=crop&w=600&q=80",
-      pieceIds: ["bach-cello-suite-1", "chopin-raindrop", "bach-air-on-g", "beethoven-elise"]
+      pieceIds: ["bach-cello-suite-1", "chopin-raindrop", "bach-air-on-g", "beethoven-elise", "debussy-arabesque-1"]
     },
     {
       id: "pl-midnight",
       title: "새벽 두 시, 혼자만의 사색",
       subtitle: "세상의 소음이 멎은 시간, 내면과 마주하는 시간",
       cover: "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=600&q=80",
-      pieceIds: ["debussy-clair-de-lune", "chopin-nocturne-9-2", "beethoven-moonlight", "mozart-pc-21-andante"]
+      pieceIds: ["debussy-clair-de-lune", "chopin-nocturne-9-2", "beethoven-moonlight", "mozart-pc-21-andante", "brahms-intermezzo-118-2"]
     },
     {
       id: "pl-rainy",
       title: "비 오는 날의 클래식 다락방",
       subtitle: "촉촉한 공기 속에서 더욱 선명해지는 첼로와 건반의 온기",
       cover: "https://images.unsplash.com/photo-1515694346937-94d85e41e6f0?auto=format&fit=crop&w=600&q=80",
-      pieceIds: ["chopin-raindrop", "bach-air-on-g", "chopin-tristesse", "tchaikovsky-swan-lake"]
+      pieceIds: ["chopin-raindrop", "bach-air-on-g", "chopin-tristesse", "tchaikovsky-swan-lake", "rachmaninoff-vocalise"]
+    },
+    {
+      id: "pl-morning",
+      title: "상쾌한 아침을 여는 모닝 클래식",
+      subtitle: "눈부신 아침 햇살과 함께 기분 좋은 하루의 시작",
+      cover: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=80",
+      pieceIds: ["grieg-morning-mood", "vivaldi-spring", "schubert-trout", "mozart-eine-kleine", "chopin-minute-waltz"]
     },
     {
       id: "pl-masterpiece",

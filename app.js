@@ -1,12 +1,13 @@
 /**
- * OPUS (오푸스) - Classical Music Curation Engine & PWA Controller (Enhanced)
- * 가독성 높은 산세리프 폰트 대응, 매일 갱신되는 오늘의 Pick, 작곡가별 대표곡 큐레이션, 터치 반응 및 검색 최적화
+ * OPUS (오푸스) - Classical Music Curation Engine & PWA Controller (Pro Edition)
+ * 12대 작곡가, 10대 무드 테마, 유튜브 뮤직 전세계 음원 연동 검색, 지능형 폴백
  */
 
 // Application State
 const state = {
   currentMood: 'all',
   selectedComposer: null,
+  selectedPeriod: 'all',
   searchQuery: '',
   deferredPrompt: null,
   dailyPiece: null
@@ -16,6 +17,7 @@ const state = {
 const piecesGrid = document.getElementById('piecesGrid');
 const moodPillsContainer = document.getElementById('moodPills');
 const composersGrid = document.getElementById('composersGrid');
+const composerPeriodPills = document.getElementById('composerPeriodPills');
 const playlistsGrid = document.getElementById('playlistsGrid');
 const searchInput = document.getElementById('searchInput');
 const searchClearBtn = document.getElementById('searchClearBtn');
@@ -48,14 +50,13 @@ document.addEventListener('DOMContentLoaded', () => {
   setupPWAInstall();
 });
 
-// 1. Dynamic Daily Rotation for "오늘의 클래식 도슨트 Pick" (Changes automatically every midnight)
+// 1. Dynamic Daily Rotation for "오늘의 클래식 도슨트 Pick" (매일 자정 자동 순환)
 function initDailyPick() {
   const now = new Date();
   const year = now.getFullYear();
   const month = now.getMonth() + 1;
   const date = now.getDate();
 
-  // Deterministic daily index based on calendar date
   const daySeed = year * 372 + month * 31 + date;
   const dailyIndex = daySeed % CLASSIC_DATA.pieces.length;
   state.dailyPiece = CLASSIC_DATA.pieces[dailyIndex];
@@ -73,7 +74,6 @@ function initDailyPick() {
     heroTodayCard.style.backgroundImage = `linear-gradient(to right, rgba(10, 12, 18, 0.96) 42%, rgba(10, 12, 18, 0.52) 100%), url('${state.dailyPiece.albumArt}')`;
   }
 
-  // Bind Hero Buttons to Today's Dynamic Pick
   if (heroTodayPlayBtn && state.dailyPiece) {
     heroTodayPlayBtn.onclick = () => playPieceExternal(state.dailyPiece.searchQuery, 'ytm');
   }
@@ -82,7 +82,7 @@ function initDailyPick() {
   }
 }
 
-// 2. Navigation & Smooth Scrolling Helpers
+// 2. Navigation & Smooth Scrolling
 function scrollToTop() {
   window.scrollTo({ top: 0, behavior: 'smooth' });
   updateActiveNav('top');
@@ -107,7 +107,7 @@ function handleBottomNav(btn, targetId) {
     if (el) {
       el.scrollIntoView({ behavior: 'smooth', block: 'start' });
       if (targetId === 'sectionAISommelier' && aiInput) {
-        setTimeout(() => aiInput.focus(), 400);
+        setTimeout(() => aiInput.focus(), 350);
       }
     }
   }
@@ -131,7 +131,6 @@ function updateActiveNav(targetId) {
   });
 }
 
-// ScrollSpy to highlight bottom navigation based on viewport position
 function setupScrollSpy() {
   const sections = ['sectionMoods', 'sectionAISommelier', 'sectionComposers', 'sectionPlaylists'];
   window.addEventListener('scroll', () => {
@@ -154,7 +153,7 @@ function setupScrollSpy() {
   }, { passive: true });
 }
 
-// 3. Render Mood Filter Pills
+// 3. Render Mood Filter Pills (10대 무드 테마)
 function renderMoodPills() {
   if (!moodPillsContainer) return;
   moodPillsContainer.innerHTML = CLASSIC_DATA.moods.map(mood => `
@@ -175,26 +174,25 @@ function handleMoodClick(moodId) {
   renderMoodPills();
   renderPieces();
 
-  // Smooth scroll down to pieces grid so user instantly sees filtered results
   const piecesSection = document.getElementById('sectionPieces');
   if (piecesSection) {
     piecesSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 }
 
-// 4. Render Pieces Grid & Active Curation Banner
+// 4. Render Pieces Grid & Universal YouTube Music Search Fallback
 function renderPieces() {
   if (!piecesGrid) return;
 
   let filtered = [...CLASSIC_DATA.pieces];
   let bannerHtml = '';
+  let showYoutubeMusicCard = false;
+  let activeSearchQuery = state.searchQuery.trim();
 
   // Composer filter
   if (state.selectedComposer) {
     const composer = CLASSIC_DATA.composers.find(c => c.id === state.selectedComposer);
     filtered = filtered.filter(p => p.composerId === state.selectedComposer);
-    
-    // Sort signature masterpieces first
     filtered.sort((a, b) => (a.signatureRank || 99) - (b.signatureRank || 99));
 
     if (composer) {
@@ -204,16 +202,21 @@ function renderPieces() {
             <div class="title">👑 ${composer.name} 대표 명곡 큐레이션 (${filtered.length}곡)</div>
             <div class="desc">"${composer.quote}"</div>
           </div>
-          <button class="btn-docent-sm" onclick="resetFilters()">전체보기 ✕</button>
+          <div style="display: flex; gap: 0.5rem; align-items: center;">
+            <a href="https://music.youtube.com/search?q=${encodeURIComponent(composer.name + ' classical')}" target="_blank" rel="noopener noreferrer" class="btn-stream btn-ytm" style="padding: 0.35rem 0.75rem; font-size: 0.76rem;">
+              🎵 YouTube Music 전곡 탐색
+            </a>
+            <button class="btn-docent-sm" onclick="resetFilters()">전체보기 ✕</button>
+          </div>
         </div>
       `;
     }
   }
-  // Search query filter
-  else if (state.searchQuery.trim()) {
-    const q = state.searchQuery.toLowerCase().trim();
+  // Search Query Filter
+  else if (activeSearchQuery) {
+    const q = activeSearchQuery.toLowerCase();
 
-    // Check if query is composer name
+    // 1. Check if search matches composer
     const matchedComposer = CLASSIC_DATA.composers.find(c => 
       c.name.toLowerCase().includes(q) || 
       c.nameEn.toLowerCase().includes(q)
@@ -225,13 +228,19 @@ function renderPieces() {
       bannerHtml = `
         <div class="curation-status-banner">
           <div>
-            <div class="title">🔍 '${matchedComposer.name}' 대표 명곡 검색 결과 (${filtered.length}곡)</div>
-            <div class="desc">${matchedComposer.era} · ${matchedComposer.country}</div>
+            <div class="title">🔍 '${matchedComposer.name}' 대표 명곡 컬렉션 (${filtered.length}곡 수록)</div>
+            <div class="desc">${matchedComposer.era} · ${matchedComposer.country} (${matchedComposer.years})</div>
           </div>
-          <button class="btn-docent-sm" onclick="resetFilters()">전체보기 ✕</button>
+          <div style="display: flex; gap: 0.5rem; align-items: center;">
+            <a href="https://music.youtube.com/search?q=${encodeURIComponent(matchedComposer.name + ' classical')}" target="_blank" rel="noopener noreferrer" class="btn-stream btn-ytm" style="padding: 0.35rem 0.75rem; font-size: 0.76rem;">
+              🎵 YouTube Music 전체 탐색
+            </a>
+            <button class="btn-docent-sm" onclick="resetFilters()">전체보기 ✕</button>
+          </div>
         </div>
       `;
     } else {
+      // 2. Search pieces by title, English title, composer, story, opus
       filtered = filtered.filter(p => 
         p.title.toLowerCase().includes(q) ||
         p.titleEn.toLowerCase().includes(q) ||
@@ -240,11 +249,14 @@ function renderPieces() {
         p.backgroundStory.toLowerCase().includes(q) ||
         (p.opus && p.opus.toLowerCase().includes(q))
       );
+
+      showYoutubeMusicCard = true; // Always offer global YouTube Music integration
+
       bannerHtml = `
         <div class="curation-status-banner">
           <div>
-            <div class="title">🔍 '${state.searchQuery}' 검색 결과 (${filtered.length}곡)</div>
-            <div class="desc">검색어와 관련된 클래식 명곡 컬렉션입니다.</div>
+            <div class="title">🔍 '${activeSearchQuery}' 검색 결과 (${filtered.length}곡 수록)</div>
+            <div class="desc">앱 내부 큐레이션 명곡 및 YouTube Music 전세계 라이브러리와 연동됩니다.</div>
           </div>
           <button class="btn-docent-sm" onclick="resetFilters()">전체보기 ✕</button>
         </div>
@@ -279,22 +291,55 @@ function renderPieces() {
     countBadge.textContent = `${filtered.length}곡 수록`;
   }
 
-  // Render No Results
+  // Universal YouTube Music Fallback Card (When searching or when no local matches)
+  const ytmUrl = `https://music.youtube.com/search?q=${encodeURIComponent(activeSearchQuery + ' classic')}`;
+  const spotifyUrl = `https://open.spotify.com/search/${encodeURIComponent(activeSearchQuery + ' classical')}`;
+  const ytVideoUrl = `https://www.youtube.com/results?search_query=${encodeURIComponent(activeSearchQuery + ' classical')}`;
+
+  const universalYtmCardHtml = `
+    <div style="grid-column: 1 / -1; background: linear-gradient(135deg, rgba(255, 0, 0, 0.12), rgba(20, 26, 42, 0.95)); border: 1px solid rgba(255, 0, 0, 0.35); border-radius: var(--radius-md); padding: 1.5rem; display: flex; flex-direction: column; gap: 0.85rem; box-shadow: var(--shadow-sm); margin-bottom: 1rem;">
+      <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.75rem;">
+        <div>
+          <span style="background: #ff0000; color: #fff; font-size: 0.72rem; font-weight: 800; padding: 0.2rem 0.55rem; border-radius: var(--radius-full);">YOUTUBE MUSIC GLOBAL</span>
+          <h4 style="font-size: 1.15rem; font-weight: 800; color: #fff; margin-top: 0.35rem;">
+            '${activeSearchQuery}' 유튜브 뮤직 공식 라이브러리 전체 탐색
+          </h4>
+          <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.15rem;">
+            전 세계 수만 명의 연주자와 오케스트라 음원을 유튜브 뮤직에서 바로 고음질로 들으실 수 있습니다.
+          </p>
+        </div>
+        <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+          <a href="${ytmUrl}" target="_blank" rel="noopener noreferrer" class="btn-stream btn-ytm" style="padding: 0.55rem 1rem;">
+            🎵 YouTube Music에서 전곡 듣기
+          </a>
+          <a href="${spotifyUrl}" target="_blank" rel="noopener noreferrer" class="btn-stream btn-spotify" style="padding: 0.55rem 1rem;">
+            🟢 Spotify
+          </a>
+          <a href="${ytVideoUrl}" target="_blank" rel="noopener noreferrer" class="btn-stream btn-secondary" style="padding: 0.55rem 1rem;">
+            ▶ 연주 영상
+          </a>
+        </div>
+      </div>
+    </div>
+  `;
+
+  // If no pieces found locally
   if (filtered.length === 0) {
     piecesGrid.innerHTML = `
-      <div style="grid-column: 1 / -1; text-align: center; padding: 3.5rem 1rem; color: var(--text-dim); background: var(--bg-card); border-radius: var(--radius-md); border: 1px dashed rgba(255,255,255,0.1);">
-        <p style="font-size: 2.4rem; margin-bottom: 0.6rem;">🎻</p>
-        <p style="font-size: 1.1rem; font-weight: 700; color: #fff;">검색된 클래식 명곡이 없습니다.</p>
-        <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.35rem;">베토벤, 쇼팽, 모차르트, 월광, 녹턴 등의 단어로 검색해보세요.</p>
-        <button class="btn-primary" onclick="resetFilters()" style="margin-top: 1.25rem;">전체 명곡 보기</button>
+      ${universalYtmCardHtml}
+      <div style="grid-column: 1 / -1; text-align: center; padding: 2.5rem 1rem; color: var(--text-dim); background: var(--bg-card); border-radius: var(--radius-md); border: 1px dashed rgba(255,255,255,0.1);">
+        <p style="font-size: 2.2rem; margin-bottom: 0.5rem;">🎼</p>
+        <p style="font-size: 1.05rem; font-weight: 700; color: #fff;">'${activeSearchQuery}'에 대한 앱 내 도슨트 카드는 준비 중입니다.</p>
+        <p style="font-size: 0.84rem; color: var(--text-muted); margin-top: 0.25rem;">위의 YouTube Music 버튼을 누르시면 해당 작곡가/곡의 전곡 음원을 즉시 감상하실 수 있습니다.</p>
+        <button class="btn-primary" onclick="resetFilters()" style="margin-top: 1.25rem;">전체 명곡으로 돌아가기</button>
       </div>
     `;
     return;
   }
 
-  // Render Cards with Rank Badges for famous works
-  piecesGrid.innerHTML = filtered.map(piece => {
-    const isSignature = piece.signatureRank && piece.signatureRank <= 3;
+  // Render Cards with Rank Badges
+  const cardsHtml = filtered.map(piece => {
+    const isSignature = piece.signatureRank && piece.signatureRank <= 5;
     const rankBadgeHtml = isSignature 
       ? `<span class="card-cover-badge rank">👑 대표곡 ${piece.signatureRank}위</span>` 
       : '';
@@ -326,9 +371,11 @@ function renderPieces() {
       </div>
     `;
   }).join('');
+
+  piecesGrid.innerHTML = (showYoutubeMusicCard ? universalYtmCardHtml : '') + cardsHtml;
 }
 
-// Reset All Filters to Default View
+// Reset All Filters
 function resetFilters() {
   state.currentMood = 'all';
   state.selectedComposer = null;
@@ -356,22 +403,35 @@ function selectComposer(composerId) {
   }
 }
 
-// 6. Render Composers Grid
-function renderComposers() {
+// 6. Render Composers Grid with Era Period Filter
+function renderComposers(periodFilter = 'all') {
   if (!composersGrid) return;
-  composersGrid.innerHTML = CLASSIC_DATA.composers.map(c => {
+  state.selectedPeriod = periodFilter;
+
+  let composers = CLASSIC_DATA.composers;
+  if (periodFilter !== 'all') {
+    composers = composers.filter(c => c.period.includes(periodFilter));
+  }
+
+  composersGrid.innerHTML = composers.map(c => {
     const composerWorks = CLASSIC_DATA.pieces.filter(p => p.composerId === c.id);
     return `
       <div class="composer-card" onclick="selectComposer('${c.id}')">
         <img class="composer-avatar" src="${c.avatar}" alt="${c.name}">
         <div class="composer-info">
           <h4>${c.name}</h4>
-          <p class="era">${c.era.split('(')[0]}</p>
-          <p class="years">${c.years} · 대표곡 ${composerWorks.length}편</p>
+          <p class="era">${c.era}</p>
+          <p class="years">${c.years} · 대표 명곡 ${composerWorks.length}편</p>
         </div>
       </div>
     `;
   }).join('');
+}
+
+function filterComposersByPeriod(btn, period) {
+  document.querySelectorAll('.period-pill').forEach(el => el.classList.remove('active'));
+  btn.classList.add('active');
+  renderComposers(period);
 }
 
 // 7. Render Playlists
@@ -410,13 +470,12 @@ function handleSearchSubmit(e) {
   renderMoodPills();
   renderPieces();
 
-  // Scroll to results immediately
   const piecesSection = document.getElementById('sectionPieces');
   if (piecesSection) {
     piecesSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
-  if (searchInput) searchInput.blur(); // dismiss mobile keyboard
+  if (searchInput) searchInput.blur();
 }
 
 function clearSearch() {
@@ -427,7 +486,6 @@ function clearSearch() {
 
 // 9. Setup Global Event Listeners
 function setupEventListeners() {
-  // Search input typing
   if (searchInput) {
     searchInput.addEventListener('input', (e) => {
       const val = e.target.value;
@@ -441,14 +499,12 @@ function setupEventListeners() {
     });
   }
 
-  // Close Modal on backdrop click
   if (modalBackdrop) {
     modalBackdrop.addEventListener('click', (e) => {
       if (e.target === modalBackdrop) closeModal();
     });
   }
 
-  // Escape key to close modal
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') closeModal();
   });
@@ -627,7 +683,7 @@ function filterByPlaylist(playlistId) {
   }
 }
 
-// 13. AI Sommelier Smart Recommendation
+// 13. AI Sommelier Smart Recommendation (Recognizes all 12 composers and 10 moods)
 function handleAIPrompt(customText = null) {
   const prompt = (customText || (aiInput ? aiInput.value : '')).trim();
   if (!prompt) return;
@@ -648,21 +704,39 @@ function handleAIPrompt(customText = null) {
 
     const pLower = prompt.toLowerCase();
 
-    if (pLower.includes("비") || pLower.includes("비오는") || pLower.includes("우울") || pLower.includes("눈물")) {
+    if (pLower.includes("슈베르트") || pLower.includes("송어") || pLower.includes("마왕") || pLower.includes("아베마리아")) {
+      matchedPiece = CLASSIC_DATA.pieces.find(p => p.id === 'schubert-trout') || CLASSIC_DATA.pieces[0];
+      sommelierComment = "‘가곡의 왕’ 슈베르트가 맑은 알프스 계곡물에서 은빛 비늘을 반짝이며 헤엄치는 송어를 노래한 피아노 5중주입니다. 마음에 상쾌한 생기와 미소를 불어넣어 드릴게요.";
+    } else if (pLower.includes("비발디") || pLower.includes("사계") || pLower.includes("봄") || pLower.includes("여름")) {
+      matchedPiece = CLASSIC_DATA.pieces.find(p => p.id === 'vivaldi-spring') || CLASSIC_DATA.pieces[0];
+      sommelierComment = "새들의 지저귐과 산들바람, 약동하는 자연의 생명력을 노래한 비발디의 '사계 - 봄'입니다. 이탈리아의 따스한 태양빛 같은 활력을 느껴보세요.";
+    } else if (pLower.includes("브람스") || pLower.includes("자장가") || pLower.includes("가을") || pLower.includes("우수")) {
+      matchedPiece = CLASSIC_DATA.pieces.find(p => p.id === 'brahms-intermezzo-118-2') || CLASSIC_DATA.pieces[0];
+      sommelierComment = "인생의 황혼기, 깊은 사색과 따뜻한 우수가 담긴 브람스의 간주곡(Intermezzo)입니다. 고요한 밤 당신의 복잡한 마음을 포근하게 품어줍니다.";
+    } else if (pLower.includes("라흐마니노프") || pLower.includes("러시아") || pLower.includes("협주곡")) {
+      matchedPiece = CLASSIC_DATA.pieces.find(p => p.id === 'rachmaninoff-rhapsody-paganini-18') || CLASSIC_DATA.pieces[0];
+      sommelierComment = "가슴을 뒤흔드는 궁극의 낭만. 파가니니의 악마적 주제를 천상의 사랑의 찬가로 탈바꿈시킨 라흐마니노프의 18변주를 들려드립니다.";
+    } else if (pLower.includes("리스트") || pLower.includes("사랑의꿈") || pLower.includes("종") || pLower.includes("캄파넬라")) {
+      matchedPiece = CLASSIC_DATA.pieces.find(p => p.id === 'liszt-liebestraum-3') || CLASSIC_DATA.pieces[0];
+      sommelierComment = "‘오 사랑하라, 그대가 사랑할 수 있는 한...’ 피아노의 신 리스트가 건반 위에 새긴 가장 달콤한 맹세, '사랑의 꿈'을 권해드립니다.";
+    } else if (pLower.includes("아침") || pLower.includes("기상") || pLower.includes("햇살") || pLower.includes("상쾌")) {
+      matchedPiece = CLASSIC_DATA.pieces.find(p => p.id === 'grieg-morning-mood') || CLASSIC_DATA.pieces[0];
+      sommelierComment = "노르웨이 피오르의 아침 안개를 뚫고 찬란하게 솟아오르는 태양. 그리그의 '아침의 기분'과 함께 상쾌하고 맑은 하루를 시작해 보세요.";
+    } else if (pLower.includes("수면") || pLower.includes("잠") || pLower.includes("불면증") || pLower.includes("자장가")) {
+      matchedPiece = CLASSIC_DATA.pieces.find(p => p.id === 'bach-goldberg-aria') || CLASSIC_DATA.pieces[0];
+      sommelierComment = "백작의 불면증을 치유하기 위해 바흐가 쓴 '골드베르크 변주곡'의 아리아입니다. 심장 박동을 자연스럽게 늦추며 깊은 숙면의 평안으로 인도합니다.";
+    } else if (pLower.includes("비") || pLower.includes("비오는") || pLower.includes("우울") || pLower.includes("눈물")) {
       matchedPiece = CLASSIC_DATA.pieces.find(p => p.id === 'chopin-raindrop') || CLASSIC_DATA.pieces[0];
       sommelierComment = "비 오는 날의 창밖 풍경에는 처마 끝에서 맑고 투명하게 떨어지는 빗방울을 닮은 쇼팽의 프렐류드가 제격입니다. 당신의 마음에 따뜻한 온기를 더해줄 거예요.";
     } else if (pLower.includes("새벽") || pLower.includes("밤") || pLower.includes("달") || pLower.includes("사색")) {
       matchedPiece = CLASSIC_DATA.pieces.find(p => p.id === 'debussy-clair-de-lune') || CLASSIC_DATA.pieces[0];
-      sommelierComment = "모두가 잠든 고요한 시간, 달빛이 잔잔한 수면 위로 내려앉듯 영혼을 정화해 주는 드뷔시의 '달빛'을 권해드립니다. 복잡했던 생각들이 은빛 여운 속으로 스르륵 흩어질 것입니다.";
+      sommelierComment = "모두가 잠든 고요한 시간, 달빛이 잔잔한 수면 위로 내려앉듯 영혼을 정화해 주는 드뷔시의 '달빛'을 권해드립니다.";
     } else if (pLower.includes("공부") || pLower.includes("집중") || pLower.includes("몰입") || pLower.includes("작업") || pLower.includes("코딩")) {
       matchedPiece = CLASSIC_DATA.pieces.find(p => p.id === 'bach-cello-suite-1') || CLASSIC_DATA.pieces[1];
-      sommelierComment = "산만한 잡념을 걷어내고 깊은 몰입의 뇌파로 유도하는 바흐의 무반주 첼로 모음곡입니다. 단 하나의 악기가 빚어내는 완벽한 질서와 울림이 지적인 집중을 완성해 드립니다.";
-    } else if (pLower.includes("열정") || pLower.includes("활력") || pLower.includes("웅장") || pLower.includes("힘") || pLower.includes("운동")) {
+      sommelierComment = "잡념을 걷어내고 깊은 몰입의 뇌파로 유도하는 바흐의 무반주 첼로 모음곡입니다. 완벽한 질서와 울림이 지적인 집중을 완성해 드립니다.";
+    } else if (pLower.includes("열정") || pLower.includes("활력") || pLower.includes("웅장") || pLower.includes("힘")) {
       matchedPiece = CLASSIC_DATA.pieces.find(p => p.id === 'beethoven-fate') || CLASSIC_DATA.pieces[1];
-      sommelierComment = "무기력함을 부수고 심장을 다시 뛰게 할 불꽃 같은 에너지가 필요한 순간입니다. 가혹한 운명에 굴복하지 않고 끝내 승리를 쟁취하는 베토벤의 운명 교향곡을 들려드립니다.";
-    } else if (pLower.includes("휴식") || pLower.includes("커피") || pLower.includes("카페") || pLower.includes("편안") || pLower.includes("수면")) {
-      matchedPiece = CLASSIC_DATA.pieces.find(p => p.id === 'mozart-pc-21-andante') || CLASSIC_DATA.pieces[2];
-      sommelierComment = "티 없이 맑은 햇살 아래 따뜻한 차 한 잔을 마시는 듯한 평화. 천상의 순수함을 담은 모차르트 피아노 협주곡 21번 2악장 안단테로 마음의 긴장을 부드럽게 이완해 보세요.";
+      sommelierComment = "무기력함을 부수고 심장을 다시 뛰게 할 불꽃 같은 에너지가 필요한 순간입니다. 승리의 환희를 쟁취하는 베토벤의 운명 교향곡을 들려드립니다.";
     } else {
       matchedPiece = CLASSIC_DATA.pieces.find(p => p.id === 'chopin-nocturne-9-2') || CLASSIC_DATA.pieces[0];
       sommelierComment = `"${prompt}"에 머무는 당신의 마음에 가장 어루만져 주는 선율로, 밤의 서정을 시처럼 노래한 쇼팽의 녹턴을 추천해 드립니다.`;
@@ -704,7 +778,7 @@ function registerServiceWorker() {
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
       navigator.serviceWorker.register('./sw.js')
-        .then((reg) => console.log('[PWA] Service Worker active, scope:', reg.scope))
+        .then((reg) => console.log('[PWA] Service Worker v3 active, scope:', reg.scope))
         .catch((err) => console.warn('[PWA] Service Worker registration failed:', err));
     });
   }
